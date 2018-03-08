@@ -1,6 +1,6 @@
 reset;
-model /home/federico/Scrivania/Anno2Semestre1/MOBD-AMPL/project.mod;
-data /home/federico/Scrivania/Anno2Semestre1/MOBD-AMPL/project.dat;
+model /home/federico/Scrivania/Anno2Semestre1/ProgettoMOBD/project.mod;
+data /home/federico/Scrivania/Anno2Semestre1/ProgettoMOBD/project.dat;
 option solver './knitro';
 options knitro_options "opttol = 1e-5"; # cambia soglia di tolleranza sull'ottimalità
 
@@ -112,12 +112,11 @@ let{p in 1..pval} yval[p] := (yval[p] - lb) / (ub - lb);
 # Start training
 
 let{i in 1..nl} w[i] := Uniform(-10,10);	
-let{i in 1..nl} c[i] := Uniform(-10,10);
+let{i in 1..n} c[i] := Uniform(-10,10);
 #let{z in 1..n+1, j in 1..nl} w[z,j] := Uniform(-10,10);	
 #let{j in 1..nl} v[j] := Uniform(-10,10);
 
 solve;
-
 
 
 

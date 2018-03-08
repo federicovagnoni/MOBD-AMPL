@@ -1,4 +1,4 @@
-param nl := 15;
+param nl := 2;
 param n := 50;
 param ptr := 318;
 param pval := 137;

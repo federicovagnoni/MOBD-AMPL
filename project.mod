@@ -50,7 +50,7 @@ param rho1;
 #var w{1..n+1, 1..ptr};
 #var v{1..nl};
 var w{1..nl};
-var c{1..nl};
+var c{1..n};
 
 
 #minimize error_tr: (0.5/ptr) * sum{p in 1..ptr} ( sum{k in 1..nl}
@@ -59,11 +59,11 @@ var c{1..nl};
 #				(1 + exp(-(sum{i in 1..n} w[i,k]*xtr[i,p] - w[n+1,k]))) - ytr[p] )^2
 #				+ 0.5 * gamma * sum{i in 1..n+1, k in 1..nl} (w[i,k]^2 + v[k]^2);
 
-minimize error_tr_rbf: 0.5 * sum{p in 1..ptr} (sum{i in 1..nl}
-				 w[i]*exp(-(sum{k in 1..n}xtr[k,p] - c[i])^2 - ytr[p]))^2
-				 + 0.5 * rho0 + sum{i in 1..nl} (w[i]^2)
-				 + 0.5 * rho1 + sum{i in 1..nl} (c[i]^2);
+minimize error_tr_rbf: 0.5 * sum{p in 1..ptr} (sum{i in 1..nl}(
+				 w[i]*exp(-(sum{k in 1..n}(xtr[k,p] - c[k])^2)^2) - ytr[p]))^2
+				 + 0.5 * rho0 + sum{i in 1..nl} w[i]^2
+				 + 0.5 * rho1 + sum{i in 1..n}  c[i]^2;
 
-minimize error_val_rbf: 0.5 * sum{p in 1..pval} (sum{i in 1..nl}
-				 w[i]*exp(-(sum{k in 1..n}xval[k,p] - c[i])^2 - yval[p]))^2;
+minimize error_val_rbf: 0.5 * sum{p in 1..pval} (sum{i in 1..nl}(
+				 w[i]*exp(-(sum{k in 1..n}(xval[k,p] - c[k])^2)^2) - yval[p]))^2;
 				
