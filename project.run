@@ -1,113 +1,120 @@
 reset;
-model /home/federico/Scrivania/Anno2Semestre1/ProgettoMOBD/project.mod;
-data /home/federico/Scrivania/Anno2Semestre1/ProgettoMOBD/project.dat;
-option solver './knitro';
-options knitro_options "opttol = 1e-5"; # cambia soglia di tolleranza sull'ottimalità
+model project.mod;
+data project.dat;
+option solver knitro;
+options knitro_options "opttol = 0.00001"; # cambia soglia di tolleranza sull'ottimalita
 
 param lb;
 param ub;
 
+
+#Lettura del dataset
 for {p in 1..ptr}{
 	for {k in 1..n}{
-		read xtr[k,p] < /home/federico/Scrivania/training_por.txt;
+		read xtr[k,p] < training_por.txt;
 	}
-	read ytr[p] < /home/federico/Scrivania/training_por.txt
+	read ytr[p] < training_por.txt;
 }
 
-# Scale age values
-let lb := min{p in 1..ptr} xtr[1,p];
-let ub := max{p in 1..ptr} xtr[1,p];
 
-let{p in 1..ptr} xtr[1,p] := (xtr[1,p] - lb) / (ub - lb);
-
-# Scale Medu
-let lb := min{p in 1..ptr} xtr[3,p];
-let ub := max{p in 1..ptr} xtr[3,p];
-
-let{p in 1..ptr} xtr[3,p] := (xtr[3,p] - lb) / (ub - lb);
-
-# Scale Fedu
-let lb := min{p in 1..ptr} xtr[4,p];
-let ub := max{p in 1..ptr} xtr[4,p];
-
-let{p in 1..ptr} xtr[4,p] := (xtr[4,p] - lb) / (ub - lb);
-
-# Scale traveltime
-let lb := min{p in 1..ptr} xtr[5,p];
-let ub := max{p in 1..ptr} xtr[5,p];
-
-let{p in 1..ptr} xtr[5,p] := (xtr[5,p] - lb) / (ub - lb);
-
-# Scale studytime
-let lb := min{p in 1..ptr} xtr[6,p];
-let ub := max{p in 1..ptr} xtr[6,p];
-
-let{p in 1..ptr} xtr[6,p] := (xtr[6,p] - lb) / (ub - lb);
-
-for {i in 16..24} {
+for {i in 2..6} {
 	let lb := min{p in 1..ptr} xtr[i,p];
 	let ub := max{p in 1..ptr} xtr[i,p];
 
-	let{p in 1..ptr} xtr[i,p] := (xtr[i,p] - lb) / (ub - lb);
+	let{p in 1..ptr} xtr[i,p] := ((2*(xtr[i,p] - lb)) / (ub - lb)) - 1;
+	
 }
 
+
+/*# Scale Medu
+let lb := min{p in 1..ptr} xtr[2,p];
+let ub := max{p in 1..ptr} xtr[2,p];
+
+let{p in 1..ptr} xtr[2,p] := (2*(xtr[2,p] - lb)) / (ub - lb) - 1;
+
+# Scale Fedu
+let lb := min{p in 1..ptr} xtr[3,p];
+let ub := max{p in 1..ptr} xtr[3,p];
+
+let{p in 1..ptr} xtr[3,p] := (2*(xtr[3,p] - lb)) / (ub - lb) - 1;
+
+# Scale traveltime
+let lb := min{p in 1..ptr} xtr[4,p];
+let ub := max{p in 1..ptr} xtr[4,p];
+
+let{p in 1..ptr} xtr[4,p] := (2*(xtr[4,p] - lb)) / (ub - lb) - 1;
+
 # Scale studytime
+let lb := min{p in 1..ptr} xtr[5,p];
+let ub := max{p in 1..ptr} xtr[5,p];
+
+let{p in 1..ptr} xtr[5,p] := (2*(xtr[5,p] - lb)) / (ub - lb) - 1;
+}*/
+
+for {i in 15..23} {
+	let lb := min{p in 1..ptr} xtr[i,p];
+	let ub := max{p in 1..ptr} xtr[i,p];
+
+	let{p in 1..ptr} xtr[i,p] := ((2*(xtr[i,p] - lb)) / (ub - lb)) - 1;
+}
+
+# Scale G3
 let lb := min{p in 1..ptr} ytr[p];
 let ub := max{p in 1..ptr} ytr[p];
 
-let{p in 1..ptr} ytr[p] := (ytr[p] - lb) / (ub - lb);
+let{p in 1..ptr} ytr[p] := ((2*(ytr[p] - lb)) / (ub - lb)) - 1;
 
 
 
-for {p in 1..pval}{
+/*for {p in 1..pval}{
 	for {k in 1..n}{
-		read xval[k,p] < /home/federico/Scrivania/validation_por.txt;
+		read xval[k,p] < validation_por.txt;
 	}
-	read yval[p] < /home/federico/Scrivania/validation_por.txt
+	read yval[p] < validation_por.txt
 }
 
-# Scale age values
+# Scale famsize values
 let lb := min{p in 1..pval} xval[1,p];
 let ub := max{p in 1..pval} xval[1,p];
 
-let{p in 1..pval} xval[1,p] := (xval[1,p] - lb) / (ub - lb);
+let{p in 1..pval} xval[1,p] := (2*(xval[1,p] - lb)) / (ub - lb) - 1;
 
 # Scale Medu
 let lb := min{p in 1..pval} xval[3,p];
 let ub := max{p in 1..pval} xval[3,p];
 
-let{p in 1..pval} xval[3,p] := (xval[3,p] - lb) / (ub - lb);
+let{p in 1..pval} xval[3,p] := (2*(xval[3,p] - lb)) / (ub - lb) - 1;
 
 # Scale Fedu
 let lb := min{p in 1..pval} xval[4,p];
 let ub := max{p in 1..pval} xval[4,p];
 
-let{p in 1..pval} xval[4,p] := (xval[4,p] - lb) / (ub - lb);
+let{p in 1..pval} xval[4,p] := (2*(xval[4,p] - lb)) / (ub - lb) - 1;
 
 # Scale traveltime
 let lb := min{p in 1..pval} xval[5,p];
 let ub := max{p in 1..pval} xval[5,p];
 
-let{p in 1..pval} xval[5,p] := (xval[5,p] - lb) / (ub - lb);
+let{p in 1..pval} xval[5,p] := (2*(xval[5,p] - lb)) / (ub - lb) - 1;
 
 # Scale studytime
 let lb := min{p in 1..pval} xval[6,p];
 let ub := max{p in 1..pval} xval[6,p];
 
-let{p in 1..pval} xval[6,p] := (xval[6,p] - lb) / (ub - lb);
+let{p in 1..pval} xval[6,p] := (2*(xval[6,p] - lb)) / (ub - lb) - 1;
 
 for {i in 16..24} {
 	let lb := min{p in 1..pval} xval[i,p];
 	let ub := max{p in 1..pval} xval[i,p];
 
-	let{p in 1..pval} xval[i,p] := (xval[i,p] - lb) / (ub - lb);
+	let{p in 1..pval} xval[i,p] := (2*(xval[i,p] - lb)) / (ub - lb) - 1;
 }
 
 # Scale studytime
 let lb := min{p in 1..pval} yval[p];
 let ub := max{p in 1..pval} yval[p];
 
-let{p in 1..pval} yval[p] := (yval[p] - lb) / (ub - lb);
+let{p in 1..pval} yval[p] := (2*(yval[p] - lb)) / (ub - lb) - 1;*/
 
 # Start training
 
