@@ -1,8 +1,8 @@
 param nl := 2;
-param n := 42;
+param n := 33;
 param ptr := 318;
 param pval := 137;
 
-param gamma := 0.00001;
-param rho0 := 0.001;
-param rho1 := 0.001;
+param gamma := 0.001;
+param rho0 := 0;
+param rho1 := 0;

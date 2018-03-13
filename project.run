@@ -10,7 +10,7 @@ param ub;
 
 #Lettura del dataset
 for {p in 1..ptr}{
-	for {k in 1..n}{
+	for {k in 1..n-1}{
 		read xtr[k,p] < training_por.txt;
 	}
 	read ytr[p] < training_por.txt;
@@ -57,6 +57,13 @@ for {i in 15..23} {
 
 	let{p in 1..ptr} xtr[i,p] := ((2*(xtr[i,p] - lb)) / (ub - lb)) - 1;
 }
+
+for {i in 16..19} {
+	let {p in 1..ptr} xtr[i,p] := -xtr[i,p];
+}
+
+let {p in 1..ptr} xtr[21,p] := -xtr[21,p];
+
 
 # Scale G3
 let lb := min{p in 1..ptr} ytr[p];
@@ -116,15 +123,50 @@ let ub := max{p in 1..pval} yval[p];
 
 let{p in 1..pval} yval[p] := (2*(yval[p] - lb)) / (ub - lb) - 1;*/
 
+#Lettura del validation set
+for {p in 1..pval}{
+	for {k in 1..n-1}{
+		read xval[k,p] < validation_por.txt;
+	}
+	read yval[p] < validation_por.txt;
+}
+
+
+for {i in 2..6} {
+	let lb := min{p in 1..pval} xval[i,p];
+	let ub := max{p in 1..pval} xval[i,p];
+
+	let{p in 1..pval} xval[i,p] := ((2*(xval[i,p] - lb)) / (ub - lb)) - 1;
+	
+}
+
+for {i in 15..23} {
+	let lb := min{p in 1..pval} xval[i,p];
+	let ub := max{p in 1..pval} xval[i,p];
+
+	let{p in 1..pval} xval[i,p] := ((2*(xval[i,p] - lb)) / (ub - lb)) - 1;
+}
+
+for {i in 16..19} {
+	let {p in 1..pval} xval[i,p] := -xval[i,p];
+}
+
+# Scale G3
+let lb := min{p in 1..pval} yval[p];
+let ub := max{p in 1..pval} yval[p];
+
+let{p in 1..pval} yval[p] := ((2*(yval[p] - lb)) / (ub - lb)) - 1;
+
+
 # Start training
 
-let{i in 1..nl} w[i] := Uniform(-10,10);	
-let{i in 1..n} c[i] := Uniform(-10,10);
-#let{z in 1..n+1, j in 1..nl} w[z,j] := Uniform(-10,10);	
+let{i in 1..nl} v[i] := Uniform(-10,10);	
+#let{i in 1..n} c[i] := Uniform(100,1000);
+let{z in 1..n, j in 1..nl} win[z,j] := Uniform(-10,10);	
 #let{j in 1..nl} v[j] := Uniform(-10,10);
 
 solve;
 
-
+display error_val_rbf;
 
 
