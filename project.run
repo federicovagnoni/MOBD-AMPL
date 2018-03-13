@@ -1,14 +1,14 @@
 reset;
 model project.mod;
 data project.dat;
-option solver knitro;
-options knitro_options "opttol = 0.00001"; # cambia soglia di tolleranza sull'ottimalita
 
 param lb;
 param ub;
 
 
-#Lettura del dataset
+# ----------------------------------
+# Lettura e scaling del training set
+# ----------------------------------
 for {p in 1..ptr}{
 	for {k in 1..n-1}{
 		read xtr[k,p] < training_por.txt;
@@ -24,32 +24,6 @@ for {i in 2..6} {
 	let{p in 1..ptr} xtr[i,p] := ((2*(xtr[i,p] - lb)) / (ub - lb)) - 1;
 	
 }
-
-
-/*# Scale Medu
-let lb := min{p in 1..ptr} xtr[2,p];
-let ub := max{p in 1..ptr} xtr[2,p];
-
-let{p in 1..ptr} xtr[2,p] := (2*(xtr[2,p] - lb)) / (ub - lb) - 1;
-
-# Scale Fedu
-let lb := min{p in 1..ptr} xtr[3,p];
-let ub := max{p in 1..ptr} xtr[3,p];
-
-let{p in 1..ptr} xtr[3,p] := (2*(xtr[3,p] - lb)) / (ub - lb) - 1;
-
-# Scale traveltime
-let lb := min{p in 1..ptr} xtr[4,p];
-let ub := max{p in 1..ptr} xtr[4,p];
-
-let{p in 1..ptr} xtr[4,p] := (2*(xtr[4,p] - lb)) / (ub - lb) - 1;
-
-# Scale studytime
-let lb := min{p in 1..ptr} xtr[5,p];
-let ub := max{p in 1..ptr} xtr[5,p];
-
-let{p in 1..ptr} xtr[5,p] := (2*(xtr[5,p] - lb)) / (ub - lb) - 1;
-}*/
 
 for {i in 15..23} {
 	let lb := min{p in 1..ptr} xtr[i,p];
@@ -72,58 +46,9 @@ let ub := max{p in 1..ptr} ytr[p];
 let{p in 1..ptr} ytr[p] := ((2*(ytr[p] - lb)) / (ub - lb)) - 1;
 
 
-
-/*for {p in 1..pval}{
-	for {k in 1..n}{
-		read xval[k,p] < validation_por.txt;
-	}
-	read yval[p] < validation_por.txt
-}
-
-# Scale famsize values
-let lb := min{p in 1..pval} xval[1,p];
-let ub := max{p in 1..pval} xval[1,p];
-
-let{p in 1..pval} xval[1,p] := (2*(xval[1,p] - lb)) / (ub - lb) - 1;
-
-# Scale Medu
-let lb := min{p in 1..pval} xval[3,p];
-let ub := max{p in 1..pval} xval[3,p];
-
-let{p in 1..pval} xval[3,p] := (2*(xval[3,p] - lb)) / (ub - lb) - 1;
-
-# Scale Fedu
-let lb := min{p in 1..pval} xval[4,p];
-let ub := max{p in 1..pval} xval[4,p];
-
-let{p in 1..pval} xval[4,p] := (2*(xval[4,p] - lb)) / (ub - lb) - 1;
-
-# Scale traveltime
-let lb := min{p in 1..pval} xval[5,p];
-let ub := max{p in 1..pval} xval[5,p];
-
-let{p in 1..pval} xval[5,p] := (2*(xval[5,p] - lb)) / (ub - lb) - 1;
-
-# Scale studytime
-let lb := min{p in 1..pval} xval[6,p];
-let ub := max{p in 1..pval} xval[6,p];
-
-let{p in 1..pval} xval[6,p] := (2*(xval[6,p] - lb)) / (ub - lb) - 1;
-
-for {i in 16..24} {
-	let lb := min{p in 1..pval} xval[i,p];
-	let ub := max{p in 1..pval} xval[i,p];
-
-	let{p in 1..pval} xval[i,p] := (2*(xval[i,p] - lb)) / (ub - lb) - 1;
-}
-
-# Scale studytime
-let lb := min{p in 1..pval} yval[p];
-let ub := max{p in 1..pval} yval[p];
-
-let{p in 1..pval} yval[p] := (2*(yval[p] - lb)) / (ub - lb) - 1;*/
-
-#Lettura del validation set
+# ------------------------------------
+# Lettura e scaling del validation set
+# ------------------------------------
 for {p in 1..pval}{
 	for {k in 1..n-1}{
 		read xval[k,p] < validation_por.txt;
@@ -160,13 +85,54 @@ let{p in 1..pval} yval[p] := ((2*(yval[p] - lb)) / (ub - lb)) - 1;
 
 # Start training
 
-let{i in 1..nl} v[i] := Uniform(-10,10);	
-#let{i in 1..n} c[i] := Uniform(100,1000);
+	
+#let{i in 1..nl} w[i] := Uniform(-100,100);	
+#let{i in 1..n-1, j in 1..nl} c[i,j] := Uniform(-100,100);
+let{i in 1..nl} v[i] := Uniform(-10,10);
 let{z in 1..n, j in 1..nl} win[z,j] := Uniform(-10,10);	
-#let{j in 1..nl} v[j] := Uniform(-10,10);
 
-solve;
+let err_tr := 1.e30;
+let err_val := 1.e30;
 
-display error_val_rbf;
+repeat while (stop_tr == 0 ){
+	
+	let loc_err_tr := 1.e30;
+	let loc_err_val := 1.e30;
+	
+	#multistart for nl neurons in the hidden layer
+	for {k in 1..100} {
+				
+		let {i in 1..n, j in 1..nl} win[i, j] := Uniform(-10,10);
+		let {i in 1..nl} v[i]:= Uniform(-10,10);
+		option solver knitro;
+		option knitro_options "opttol = 0.0001";
+		solve;
+		
+		#saving best error on the validation set for nl neurons
+		if (error_val <= loc_err_val) then { 
+			printf "error on validation improved: old %f new %f\n", loc_err_val, error_val;
+			let loc_err_val := error_val;
+			let loc_err_tr := error_tr;
+		}
+		let best_k_loc := k;
+	} 
+
+	#check for a global improvement on the validation set
+	if (loc_err_val < err_val) then {
+	#updating the best error and increasing the number of neurons
+		printf "the best error on the validation set is %f with %d neurons \n",
+			loc_err_val,nl;
+		let best_nl := nl; 
+		let best_k := best_k_loc;
+		let nl := nl+1;
+		let err_val := loc_err_val;
+		let err_tr := loc_err_tr;
+	}
+	else 
+	#stop
+		let stop_tr := 1;
+}#while
+
+display error_val;
 
 

@@ -23,17 +23,17 @@ data_por_final <- mutate(data_por_final, Pstatus_A = ifelse(Pstatus == "A", 1, -
 #data_por_final <- mutate(data_por_final, Pstatus_O = ifelse(Pstatus == "O", 1, -1))
 data_por_final <- mutate(data_por_final, Pstatus = NULL)
 
-data_por_final <- mutate(data_por_final, guardian_father = ifelse(guardian == "father", 1, -1))
-data_por_final <- mutate(data_por_final, guardian_mother = ifelse(guardian == "mother", 1, -1))
-data_por_final <- mutate(data_por_final, guardian_other = ifelse(guardian == "other", 1, -1))
+#data_por_final <- mutate(data_por_final, guardian_father = ifelse(guardian == "father", 1, -1))
+#data_por_final <- mutate(data_por_final, guardian_mother = ifelse(guardian == "mother", 1, -1))
+#data_por_final <- mutate(data_por_final, guardian_other = ifelse(guardian == "other", 1, -1))
 data_por_final <- mutate(data_por_final, guardian = NULL)
 
 data_por_final <- mutate(data_por_final, famsize = ifelse(schoolsup == "LE3", 1, -1))
 
-data_por_final <- mutate(data_por_final, reason_course = ifelse(reason == "course", 1, -1))
-data_por_final <- mutate(data_por_final, reason_home = ifelse(reason == "home", 1, -1))
-data_por_final <- mutate(data_por_final, reason_reputation = ifelse(reason == "reputation", 1, -1))
-data_por_final <- mutate(data_por_final, reason_other = ifelse(reason == "other", 1, -1))
+#data_por_final <- mutate(data_por_final, reason_course = ifelse(reason == "course", 1, -1))
+#data_por_final <- mutate(data_por_final, reason_home = ifelse(reason == "home", 1, -1))
+#data_por_final <- mutate(data_por_final, reason_reputation = ifelse(reason == "reputation", 1, -1))
+#data_por_final <- mutate(data_por_final, reason_other = ifelse(reason == "other", 1, -1))
 data_por_final <- mutate(data_por_final, reason = NULL)
 
 data_por_final <- mutate(data_por_final, schoolsup = ifelse(schoolsup == "yes", 1, -1))
