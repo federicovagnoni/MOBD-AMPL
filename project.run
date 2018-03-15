@@ -20,14 +20,14 @@ for {p in 1..ptr}{
 let lb := min{p in 1..ptr} xtr[1,p];
 let ub := max{p in 1..ptr} xtr[1,p];
 
-let{p in 1..ptr} xtr[1,p] := ((2*(xtr[1,p] - lb)) / (ub - lb)) - 1;
+let{p in 1..ptr} xtr[1,p] := (xtr[1,p] - lb) / (ub - lb);
 
 # Scale of Medu, Fedu, traveltime, studytime, failures
 for {i in 3..7} {
 	let lb := min{p in 1..ptr} xtr[i,p];
 	let ub := max{p in 1..ptr} xtr[i,p];
 
-	let{p in 1..ptr} xtr[i,p] := ((2*(xtr[i,p] - lb)) / (ub - lb)) - 1;
+	let{p in 1..ptr} xtr[i,p] := (xtr[i,p] - lb) / (ub - lb);
 	
 }
 
@@ -41,7 +41,7 @@ for {i in 16..24} {
 	let lb := min{p in 1..ptr} xtr[i,p];
 	let ub := max{p in 1..ptr} xtr[i,p];
 
-	let{p in 1..ptr} xtr[i,p] := ((2*(xtr[i,p] - lb)) / (ub - lb)) - 1;
+	let{p in 1..ptr} xtr[i,p] := (xtr[i,p] - lb) / (ub - lb);
 }
 
 # freetime, goout, Dalc, Walc are valued opposite manner
@@ -57,7 +57,7 @@ let {p in 1..ptr} xtr[22,p] := -xtr[22,p];
 let lb := min{p in 1..ptr} ytr[p];
 let ub := max{p in 1..ptr} ytr[p];
 
-let{p in 1..ptr} ytr[p] := ((2*(ytr[p] - lb)) / (ub - lb)) - 1;
+let{p in 1..ptr} ytr[p] := (ytr[p] - lb) / (ub - lb);
 
 
 # ------------------------------------
@@ -75,7 +75,7 @@ for {p in 1..pval}{
 let lb := min{p in 1..pval} xval[1,p];
 let ub := max{p in 1..pval} xval[1,p];
 
-let{p in 1..pval} xval[1,p] := ((2*(xval[1,p] - lb)) / (ub - lb)) - 1;
+let{p in 1..pval} xval[1,p] := (xval[1,p] - lb) / (ub - lb);
 
 
 # Scale of Medu, Fedu, traveltime, studytime, failures
@@ -83,7 +83,7 @@ for {i in 3..7} {
 	let lb := min{p in 1..pval} xval[i,p];
 	let ub := max{p in 1..pval} xval[i,p];
 
-	let{p in 1..pval} xval[i,p] := ((2*(xval[i,p] - lb)) / (ub - lb)) - 1;
+	let{p in 1..pval} xval[i,p] := (xval[i,p] - lb) / (ub - lb);
 	
 }
 
@@ -96,7 +96,7 @@ for {i in 16..24} {
 	let lb := min{p in 1..pval} xval[i,p];
 	let ub := max{p in 1..pval} xval[i,p];
 
-	let{p in 1..pval} xval[i,p] := ((2*(xval[i,p] - lb)) / (ub - lb)) - 1;
+	let{p in 1..pval} xval[i,p] := (xval[i,p] - lb) / (ub - lb);
 }
 
 # freetime, goout, Dalc, Walc are valued on the opposite
@@ -112,7 +112,7 @@ let {p in 1..pval} xval[22,p] := -xval[22,p];
 let lb := min{p in 1..pval} yval[p];
 let ub := max{p in 1..pval} yval[p];
 
-let{p in 1..pval} yval[p] := ((2*(yval[p] - lb)) / (ub - lb)) - 1;
+let{p in 1..pval} yval[p] := (yval[p] - lb) / (ub - lb);
 
 
 # Start training
