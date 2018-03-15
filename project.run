@@ -16,8 +16,14 @@ for {p in 1..ptr}{
 	read ytr[p] < training_por.txt;
 }
 
+# Scale of age
+let lb := min{p in 1..ptr} xtr[1,p];
+let ub := max{p in 1..ptr} xtr[1,p];
 
-for {i in 2..6} {
+let{p in 1..ptr} xtr[1,p] := ((2*(xtr[1,p] - lb)) / (ub - lb)) - 1;
+
+# Scale of Medu, Fedu, traveltime, studytime, failures
+for {i in 3..7} {
 	let lb := min{p in 1..ptr} xtr[i,p];
 	let ub := max{p in 1..ptr} xtr[i,p];
 
@@ -25,18 +31,26 @@ for {i in 2..6} {
 	
 }
 
-for {i in 15..23} {
+# traveltime and failures are valued opposite manner
+let {p in 1..ptr} xtr[5,p] := -xtr[5,p];
+let {p in 1..ptr} xtr[7,p] := -xtr[7,p];
+
+
+
+for {i in 16..24} {
 	let lb := min{p in 1..ptr} xtr[i,p];
 	let ub := max{p in 1..ptr} xtr[i,p];
 
 	let{p in 1..ptr} xtr[i,p] := ((2*(xtr[i,p] - lb)) / (ub - lb)) - 1;
 }
 
-for {i in 16..19} {
+# freetime, goout, Dalc, Walc are valued opposite manner
+for {i in 17..20} {
 	let {p in 1..ptr} xtr[i,p] := -xtr[i,p];
 }
 
-let {p in 1..ptr} xtr[21,p] := -xtr[21,p];
+# absences are valued on opposite manner
+let {p in 1..ptr} xtr[22,p] := -xtr[22,p];
 
 
 # Scale G3
@@ -57,7 +71,15 @@ for {p in 1..pval}{
 }
 
 
-for {i in 2..6} {
+# Scale of age
+let lb := min{p in 1..pval} xval[1,p];
+let ub := max{p in 1..pval} xval[1,p];
+
+let{p in 1..pval} xval[1,p] := ((2*(xval[1,p] - lb)) / (ub - lb)) - 1;
+
+
+# Scale of Medu, Fedu, traveltime, studytime, failures
+for {i in 3..7} {
 	let lb := min{p in 1..pval} xval[i,p];
 	let ub := max{p in 1..pval} xval[i,p];
 
@@ -65,16 +87,26 @@ for {i in 2..6} {
 	
 }
 
-for {i in 15..23} {
+# traveltime and failures are valued on the opposite
+let {p in 1..pval} xval[5,p] := -xval[5,p];
+let {p in 1..pval} xval[7,p] := -xval[7,p];
+
+
+for {i in 16..24} {
 	let lb := min{p in 1..pval} xval[i,p];
 	let ub := max{p in 1..pval} xval[i,p];
 
 	let{p in 1..pval} xval[i,p] := ((2*(xval[i,p] - lb)) / (ub - lb)) - 1;
 }
 
-for {i in 16..19} {
+# freetime, goout, Dalc, Walc are valued on the opposite
+for {i in 17..20} {
 	let {p in 1..pval} xval[i,p] := -xval[i,p];
 }
+
+# absences are valued on the opposite
+let {p in 1..pval} xval[22,p] := -xval[22,p];
+
 
 # Scale G3
 let lb := min{p in 1..pval} yval[p];
@@ -105,7 +137,8 @@ repeat while (stop_tr == 0 ){
 		let {i in 1..n, j in 1..nl} win[i, j] := Uniform(-10,10);
 		let {i in 1..nl} v[i]:= Uniform(-10,10);
 		option solver knitro;
-		option knitro_options "opttol = 0.0001";
+		option knitro_options "opttol = 1.0e-5";
+		option solver_msg 0;
 		solve;
 		
 		#saving best error on the validation set for nl neurons
@@ -133,6 +166,7 @@ repeat while (stop_tr == 0 ){
 		let stop_tr := 1;
 }#while
 
-display error_val;
+display best_nl;
+display err_val;
 
 

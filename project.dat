@@ -1,10 +1,10 @@
-param nl := 6;
-param n := 29;
+param nl := 3;
+param n := 50;
 param ptr := 318;
 param pval := 137;
 
-param gamma := 0.001;
-param rho1 := 0.001;
-param rho2 := 0.001;
+param gamma := 0.0005;
+#param rho1 := 0.001;
+#param rho2 := 0.001;
 
 param stop_tr := 0;
