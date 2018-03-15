@@ -32,8 +32,8 @@ for {i in 3..7} {
 }
 
 # traveltime and failures are valued opposite manner
-let {p in 1..ptr} xtr[5,p] := -xtr[5,p];
-let {p in 1..ptr} xtr[7,p] := -xtr[7,p];
+#let {p in 1..ptr} xtr[5,p] := -xtr[5,p];
+#let {p in 1..ptr} xtr[7,p] := -xtr[7,p];
 
 
 
@@ -45,12 +45,12 @@ for {i in 16..24} {
 }
 
 # freetime, goout, Dalc, Walc are valued opposite manner
-for {i in 17..20} {
-	let {p in 1..ptr} xtr[i,p] := -xtr[i,p];
-}
+#for {i in 17..20} {
+#	let {p in 1..ptr} xtr[i,p] := -xtr[i,p];
+#}
 
 # absences are valued on opposite manner
-let {p in 1..ptr} xtr[22,p] := -xtr[22,p];
+#let {p in 1..ptr} xtr[22,p] := -xtr[22,p];
 
 
 # Scale G3
@@ -88,8 +88,8 @@ for {i in 3..7} {
 }
 
 # traveltime and failures are valued on the opposite
-let {p in 1..pval} xval[5,p] := -xval[5,p];
-let {p in 1..pval} xval[7,p] := -xval[7,p];
+#let {p in 1..pval} xval[5,p] := -xval[5,p];
+#let {p in 1..pval} xval[7,p] := -xval[7,p];
 
 
 for {i in 16..24} {
@@ -100,12 +100,12 @@ for {i in 16..24} {
 }
 
 # freetime, goout, Dalc, Walc are valued on the opposite
-for {i in 17..20} {
-	let {p in 1..pval} xval[i,p] := -xval[i,p];
-}
+#for {i in 17..20} {
+#	let {p in 1..pval} xval[i,p] := -xval[i,p];
+#}
 
 # absences are valued on the opposite
-let {p in 1..pval} xval[22,p] := -xval[22,p];
+#let {p in 1..pval} xval[22,p] := -xval[22,p];
 
 
 # Scale G3
@@ -118,10 +118,7 @@ let{p in 1..pval} yval[p] := (yval[p] - lb) / (ub - lb);
 # Start training
 
 	
-#let{i in 1..nl} w[i] := Uniform(-100,100);	
-#let{i in 1..n-1, j in 1..nl} c[i,j] := Uniform(-100,100);
-let{i in 1..nl} v[i] := Uniform(-10,10);
-let{z in 1..n, j in 1..nl} win[z,j] := Uniform(-10,10);	
+	
 
 let err_tr := 1.e30;
 let err_val := 1.e30;
@@ -134,8 +131,11 @@ repeat while (stop_tr == 0 ){
 	#multistart for nl neurons in the hidden layer
 	for {k in 1..100} {
 				
-		let {i in 1..n, j in 1..nl} win[i, j] := Uniform(-10,10);
-		let {i in 1..nl} v[i]:= Uniform(-10,10);
+		#let{i in 1..nl} w[i] := Uniform(-100,100);	
+		#let{i in 1..n-1, j in 1..nl} c[i,j] := Uniform(-100,100);
+		let{i in 1..nl} v[i] := Uniform(-10,10);
+		let{z in 1..n, j in 1..nl} win[z,j] := Uniform(-10,10);		
+		
 		option solver knitro;
 		option knitro_options "opttol = 1.0e-5";
 		option solver_msg 0;

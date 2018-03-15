@@ -61,14 +61,19 @@ var v{1..nl};
 #var w{1..nl};
 #var c{1..n-1, 1..nl};
 
-/*
-minimize error_tr: (0.5/ptr) * sum{p in 1..ptr} ( sum{k in 1..nl}
-				v[k]*
-				(1 - exp(-(sum{i in 1..n} w[i,k]*xtr[i,p] - w[n+1,k])))/
-				(1 + exp(-(sum{i in 1..n} w[i,k]*xtr[i,p] - w[n+1,k]))) - ytr[p] )^2
-				+ 0.5 * gamma * sum{i in 1..n+1, k in 1..nl} (w[i,k]^2 + v[k]^2);
 
-*/
+minimize error_tr: (0.5/ptr) * sum{p in 1..ptr} ( sum{j in 1..nl}
+				v[j]*
+				(1 - exp(-(sum{k in 1..n-1} win[k,j]*xtr[k,p] - win[n,j])))/
+				(1 + exp(-(sum{k in 1..n-1} win[k,j]*xtr[k,p] - win[n,j]))) - ytr[p])^2
+				+ 0.5 * gamma * sum{i in 1..n, j in 1..nl} (win[i,j]^2 + v[j]^2);
+
+minimize error_val: (1/pval) * sum{p in 1..pval} abs( sum{j in 1..nl}
+				v[j]*
+				(1 - exp(-(sum{k in 1..n-1} win[k,j]*xval[k,p] - win[n,j])))/
+				(1 + exp(-(sum{k in 1..n-1} win[k,j]*xval[k,p] - win[n,j]))) - yval[p]);
+
+/*
 
 minimize error_tr: 1/(2.0*ptr)*sum{p in 1..ptr}(sum{j in 1..nl}
 				(v[j]/(1+exp(-(sum{k in 1..n-1} win[k,j]*xtr[k,p] - win[n,j])))) - ytr[p])^2
@@ -76,25 +81,19 @@ minimize error_tr: 1/(2.0*ptr)*sum{p in 1..ptr}(sum{j in 1..nl}
 
 minimize error_val: (1/pval)*sum{p in 1..pval} abs(sum{j in 1..nl}
 				(v[j]/(1+exp(-(sum{k in 1..n-1} win[k,j]*xval[k,p] - win[n,j])))) - yval[p]);
-/*
-minimize error_tr_rbf: 0.5 * sum{p in 1..ptr} (sum{i in 1..nl}(
-				 w[i]*exp(-(sum{k in 1..n}(xtr[k,p] - c[k])^2)) - ytr[p]))^2
-				 + 0.5 * rho0 + sum{i in 1..nl} w[i]^2
-				 + 0.5 * rho1 + sum{i in 1..n}  c[i]^2;
 
-minimize error_val_rbf: 0.5 * sum{p in 1..pval} (sum{i in 1..nl}(
-				 w[i]*exp(-(sum{k in 1..n}(xval[k,p] - c[k])^2)^2) - yval[p]))^2;
 			
-		
+*/		
 
-
-minimize error_tr_rbf: 0.5 * sum{p in 1..ptr} (sum{i in 1..nl}(	
+/*
+minimize error_tr: 0.5 * sum{p in 1..ptr} (sum{i in 1..nl}(	
 				 	w[i]*exp(-sum{k in 1..n-1} (xtr[k,p] - c[k,i])^2) - ytr[p]))^2
 					 + 0.5 * rho1 * sum{i in 1..nl} w[i]^2
 					 + 0.5 * rho2 * sum{i in 1..n-1, j in 1..nl} c[i,j]^2;
+				
+minimize error_val: 0.5 * sum{p in 1..ptr} (sum{i in 1..nl}(	
+				 	w[i]*exp(-sum{k in 1..n-1} (xtr[k,p] - c[k,i])^2) - ytr[p]));			
 */				
-				
-				
 				
 				
 				
