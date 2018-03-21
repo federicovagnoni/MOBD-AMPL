@@ -1,0 +1,301 @@
+# ----------------------------------
+# Lettura e scaling del training set
+# ----------------------------------
+for {p in 1..ptr}{
+	for {k in 1..n-1}{
+		read xtr[k,p] < training_por.txt;
+	}
+	read ytr[p] < training_por.txt;
+}
+
+# Scale of age
+let lb := min{p in 1..ptr} xtr[1,p];
+let ub := max{p in 1..ptr} xtr[1,p];
+#let mean := sum{p in 1..ptr} xtr[1,p] / ptr;
+#let std := sqrt( (sum{p in 1..ptr}(xtr[1,p] - mean)^2) / (ptr - 1) );
+
+let{p in 1..ptr} xtr[1,p] := (xtr[1,p] - lb) / (ub - lb);
+#let{p in 1..ptr} xtr[1,p] := (xtr[1,p] - mean) / std;
+
+# Scale of Medu, Fedu, traveltime, studytime, failures
+for {i in 3..7} {
+	let lb := min{p in 1..ptr} xtr[i,p];
+	let ub := max{p in 1..ptr} xtr[i,p];
+	#let mean := sum{p in 1..ptr} xtr[i,p] / ptr;
+	#let std := sqrt( (sum{p in 1..ptr}(xtr[i,p] - mean)^2) / (ptr - 1) );
+
+	let{p in 1..ptr} xtr[i,p] := (xtr[i,p] - lb) / (ub - lb);
+	#let{p in 1..ptr} xtr[i,p] := (xtr[i,p] - mean) / std;
+
+}
+
+# traveltime and failures are valued opposite manner
+let {p in 1..ptr} xtr[5,p] := -xtr[5,p];
+let {p in 1..ptr} xtr[7,p] := -xtr[7,p];
+
+#Scale of famsup
+let lb := min{p in 1..ptr} xtr[9,p];
+let ub := max{p in 1..ptr} xtr[9,p];
+
+let{p in 1..ptr} xtr[9,p] := ((2*(xtr[9,p] - lb)) / (ub - lb)) - 1;
+
+#Scale of nursery
+let lb := min{p in 1..ptr} xtr[12,p];
+let ub := max{p in 1..ptr} xtr[12,p];
+
+let{p in 1..ptr} xtr[12,p] := ((2*(xtr[12,p] - lb)) / (ub - lb)) - 1;
+
+#Scale of higher
+let lb := min{p in 1..ptr} xtr[13,p];
+let ub := max{p in 1..ptr} xtr[13,p];
+
+let{p in 1..ptr} xtr[13,p] := ((2*(xtr[13,p] - lb)) / (ub - lb)) - 1;
+
+#internet
+let {p in 1..ptr} xtr[14,p] := -xtr[14,p];
+
+
+for {i in 16..24} {
+	let lb := min{p in 1..ptr} xtr[i,p];
+	let ub := max{p in 1..ptr} xtr[i,p];
+	#let mean := sum{p in 1..ptr} xtr[i,p] / ptr;
+	#let std := sqrt( (sum{p in 1..ptr}(xtr[i,p] - mean)^2) / (ptr - 1) );
+
+	let{p in 1..ptr} xtr[i,p] := (xtr[i,p] - lb) / (ub - lb);
+	#let{p in 1..ptr} xtr[i,p] := (xtr[i,p] - mean) / std;
+}
+
+# freetime, goout, Dalc, Walc are valued opposite manner
+for {i in 17..20} {
+	let {p in 1..ptr} xtr[i,p] := -xtr[i,p];
+}
+
+# absences are valued on opposite manner
+let {p in 1..ptr} xtr[22,p] := -xtr[22,p];
+
+# reason_home are valued on opposite manner
+let {p in 1..ptr} xtr[37,p] := -xtr[37,p];
+
+#job of parents if not teacher are considered in opposit manner
+for {i in 40..45} {
+	let {p in 1..ptr} xtr[i,p] := -xtr[i,p];
+}
+
+for {i in 48..49} {
+	let {p in 1..ptr} xtr[i,p] := -xtr[i,p];
+}
+
+# other guardian is valued on opposite manner
+let {p in 1..ptr} xtr[35,p] := -xtr[35,p];
+
+# Scale G3
+let lb := min{p in 1..ptr} ytr[p];
+let ub := max{p in 1..ptr} ytr[p];
+#let mean := sum{p in 1..ptr} ytr[p] / ptr;
+#let std := sqrt( (sum{p in 1..ptr}(ytr[p] - mean)^2) / (ptr - 1) );
+
+let{p in 1..ptr} ytr[p] := (ytr[p] - lb) / (ub - lb);
+#let{p in 1..ptr} ytr[p] := (ytr[p] - mean) / std;
+
+
+# ------------------------------------
+# Lettura e scaling del validation set
+# ------------------------------------
+for {p in 1..pval}{
+	for {k in 1..n-1}{
+		read xval[k,p] < validation_por.txt;
+	}
+	read yval[p] < validation_por.txt;
+}
+
+
+# Scale of age
+let lb := min{p in 1..pval} xval[1,p];
+let ub := max{p in 1..pval} xval[1,p];
+#let mean := sum{p in 1..pval} xval[1,p] / ptr;
+#let std := sqrt( (sum{p in 1..pval}(xval[1,p] - mean)^2) / (ptr - 1) );
+
+let{p in 1..pval} xval[1,p] := (xval[1,p] - lb) / (ub - lb);
+#let{p in 1..pval} xval[1,p] := (xval[1,p] - mean) / std;
+
+
+# Scale of Medu, Fedu, traveltime, studytime, failures
+for {i in 3..7} {
+	let lb := min{p in 1..pval} xval[i,p];
+	let ub := max{p in 1..pval} xval[i,p];
+	#let mean := sum{p in 1..pval} xval[i,p] / ptr;
+	#let std := sqrt( (sum{p in 1..pval}(xval[i,p] - mean)^2) / (ptr - 1) );
+
+	let{p in 1..pval} xval[i,p] := (xval[i,p] - lb) / (ub - lb);
+	#let{p in 1..pval} xval[i,p] := (xval[i,p] - mean) / std;
+}
+
+# traveltime and failures are valued opposite manner
+let {p in 1..pval} xval[5,p] := -xval[5,p];
+let {p in 1..pval} xval[7,p] := -xval[7,p];
+
+#Scale of famsup
+let lb := min{p in 1..pval} xval[9,p];
+let ub := max{p in 1..pval} xval[9,p];
+
+let{p in 1..pval} xval[9,p] := ((2*(xval[9,p] - lb)) / (ub - lb)) - 1;
+
+#Scale of nursery
+let lb := min{p in 1..pval} xval[12,p];
+let ub := max{p in 1..pval} xval[12,p];
+
+let{p in 1..pval} xval[12,p] := ((2*(xval[12,p] - lb)) / (ub - lb)) - 1;
+
+#Scale of higher
+let lb := min{p in 1..pval} xval[13,p];
+let ub := max{p in 1..pval} xval[13,p];
+
+let{p in 1..pval} xval[13,p] := ((2*(xval[13,p] - lb)) / (ub - lb)) - 1;
+
+#internet
+let {p in 1..pval} xval[14,p] := -xval[14,p];
+
+
+for {i in 16..24} {
+	let lb := min{p in 1..pval} xval[i,p];
+	let ub := max{p in 1..pval} xval[i,p];
+	#let mean := sum{p in 1..pval} xval[i,p] / ptr;
+	#let std := sqrt( (sum{p in 1..pval}(xval[i,p] - mean)^2) / (ptr - 1) );
+
+	let{p in 1..pval} xval[i,p] := (xval[i,p] - lb) / (ub - lb);
+	#let{p in 1..pval} xval[i,p] := (xval[i,p] - mean) / std;
+}
+
+# freetime, goout, Dalc, Walc are valued on the opposite
+for {i in 17..20} {
+	let {p in 1..pval} xval[i,p] := -xval[i,p];
+}
+
+# absences are valued on the opposite
+let {p in 1..pval} xval[22,p] := -xval[22,p];
+
+# reason_home are valued on opposite manner
+let {p in 1..pval} xval[37,p] := -xval[37,p];
+
+#job of parents if not teacher are considered in opposit manner
+for {i in 40..45} {
+	let {p in 1..pval} xval[i,p] := -xval[i,p];
+}
+
+for {i in 48..49} {
+	let {p in 1..pval} xval[i,p] := -xval[i,p];
+}
+
+# other guardian is valued on opposite manner
+let {p in 1..pval} xval[35,p] := -xval[35,p];
+
+# Scale G3
+let lb := min{p in 1..pval} yval[p];
+let ub := max{p in 1..pval} yval[p];
+#let mean := sum{p in 1..pval} yval[p] / ptr;
+#let std := sqrt( (sum{p in 1..pval}(yval[p] - mean)^2) / (ptr - 1) );
+
+let{p in 1..pval} yval[p] := (yval[p] - lb) / (ub - lb);
+#let{p in 1..pval} yval[p] := (yval[p] - mean) / std;
+
+
+# ------------------------------------
+# Lettura e scaling del test set
+# ------------------------------------
+for {p in 1..ptest}{
+	for {k in 1..n-1}{
+		read xtest[k,p] < test_por.txt;
+	}
+	read ytest[p] < test_por.txt;
+}
+
+
+# Scale of age
+let lb := min{p in 1..ptest} xtest[1,p];
+let ub := max{p in 1..ptest} xtest[1,p];
+#let mean := sum{p in 1..ptest} xtest[1,p] / ptr;
+#let std := sqrt( (sum{p in 1..ptest}(xtest[1,p] - mean)^2) / (ptr - 1) );
+
+let{p in 1..ptest} xtest[1,p] := (xtest[1,p] - lb) / (ub - lb);
+#let{p in 1..ptest} xtest[1,p] := (xtest[1,p] - mean) / std;
+
+
+# Scale of Medu, Fedu, traveltime, studytime, failures
+for {i in 3..7} {
+	let lb := min{p in 1..ptest} xtest[i,p];
+	let ub := max{p in 1..ptest} xtest[i,p];
+	#let mean := sum{p in 1..ptest} xtest[i,p] / ptr;
+	#let std := sqrt( (sum{p in 1..ptest}(xtest[i,p] - mean)^2) / (ptr - 1) );
+
+	let{p in 1..ptest} xtest[i,p] := (xtest[i,p] - lb) / (ub - lb);
+	#let{p in 1..ptest} xtest[i,p] := (xtest[i,p] - mean) / std;
+}
+
+# traveltime and failures are valued on the opposite
+let {p in 1..ptest} xtest[5,p] := -xtest[5,p];
+let {p in 1..ptest} xtest[7,p] := -xtest[7,p];
+
+#Scale of famsup
+let lb := min{p in 1..ptest} xtest[9,p];
+let ub := max{p in 1..ptest} xtest[9,p];
+
+let{p in 1..ptest} xtest[9,p] := ((2*(xtest[9,p] - lb)) / (ub - lb)) - 1;
+
+#Scale of nursery
+let lb := min{p in 1..ptest} xtest[12,p];
+let ub := max{p in 1..ptest} xtest[12,p];
+
+let{p in 1..ptest} xtest[12,p] := ((2*(xtest[12,p] - lb)) / (ub - lb)) - 1;
+
+#Scale of higher
+let lb := min{p in 1..ptest} xtest[13,p];
+let ub := max{p in 1..ptest} xtest[13,p];
+
+let{p in 1..ptest} xtest[13,p] := ((2*(xtest[13,p] - lb)) / (ub - lb)) - 1;
+
+#internet
+let {p in 1..ptest} xtest[14,p] := -xtest[14,p];
+
+
+
+for {i in 16..24} {
+	let lb := min{p in 1..ptest} xtest[i,p];
+	let ub := max{p in 1..ptest} xtest[i,p];
+	#let mean := sum{p in 1..ptest} xtest[i,p] / ptr;
+	#let std := sqrt( (sum{p in 1..ptest}(xtest[i,p] - mean)^2) / (ptr - 1) );
+
+	let{p in 1..ptest} xtest[i,p] := (xtest[i,p] - lb) / (ub - lb);
+	#let{p in 1..ptest} xtest[i,p] := (xtest[i,p] - mean) / std;
+}
+
+# freetime, goout, Dalc, Walc are valued on the opposite
+for {i in 17..20} {
+	let {p in 1..ptest} xtest[i,p] := -xtest[i,p];
+}
+
+# absences are valued on the opposite
+let {p in 1..ptest} xtest[22,p] := -xtest[22,p];
+
+# reason_home are valued on opposite manner
+let {p in 1..ptest} xtest[37,p] := -xtest[37,p];
+
+#job of parents if not teacher are considered in opposit manner
+for {i in 40..45} {
+	let {p in 1..ptest} xtest[i,p] := -xtest[i,p];
+}
+
+for {i in 48..49} {
+	let {p in 1..ptest} xtest[i,p] := -xtest[i,p];
+}
+
+# other guardian is valued on opposite manner
+let {p in 1..pval} xval[35,p] := -xval[35,p];
+
+# Scale G3
+let lb := min{p in 1..ptest} ytest[p];
+let ub := max{p in 1..ptest} ytest[p];
+#let mean := sum{p in 1..ptest} ytest[p] / ptr;
+#let std := sqrt( (sum{p in 1..ptest}(ytest[p] - mean)^2) / (ptr - 1) );
+
+let{p in 1..ptest} ytest[p] := (ytest[p] - lb) / (ub - lb);
+#let{p in 1..ptest} ytest[p] := (ytest[p] - mean) / std;
