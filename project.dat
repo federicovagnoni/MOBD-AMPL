@@ -1,9 +1,10 @@
-param nl := 2;
+param nl := 4;
 param n := 50;
 param ptr := 318;
-param pval := 137;
+param pval := 68;
+param ptest := 69;
+param gamma := 0;
 
-param gamma := 0.0000001;
 param rho1 := 0.001;
 param rho2 := 0.001;
 

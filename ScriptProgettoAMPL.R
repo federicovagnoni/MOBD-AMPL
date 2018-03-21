@@ -28,7 +28,7 @@ data_por_final <- mutate(data_por_final, guardian_mother = ifelse(guardian == "m
 data_por_final <- mutate(data_por_final, guardian_other = ifelse(guardian == "other", 1, 0))
 data_por_final <- mutate(data_por_final, guardian = NULL)
 
-data_por_final <- mutate(data_por_final, famsize = ifelse(schoolsup == "LE3", 1, -1))
+data_por_final <- mutate(data_por_final, famsize = ifelse(schoolsup == "LE3", 1, 0))
 
 data_por_final <- mutate(data_por_final, reason_course = ifelse(reason == "course", 1, 0))
 data_por_final <- mutate(data_por_final, reason_home = ifelse(reason == "home", 1, 0))
@@ -64,11 +64,19 @@ data_por_final <- mutate(data_por_final, G3 = NULL)
 data_por_final <- cbind(data_por_final,G3) 
 
 nrow <- nrow(data_por_final)
-smp_size <- floor(0.70 * nrow)
-train_ind <- sample(seq_len(nrow), size = smp_size)
+train_size <- floor(0.70 * nrow)
+train_ind <- sample(seq_len(nrow), size = train_size)
+
 train <- data_por_final[train_ind, ]
-val <- data_por_final[-train_ind,]
+valtest <- data_por_final[-train_ind, ]
+
+val_size <- floor(0.50 * (nrow - train_size))
+val_ind <- sample(seq_len(nrow - train_size), size = val_size)
+
+val <- valtest[val_ind,]
+test <- valtest[-val_ind, ]
 
 write.table(train, quote= FALSE, row.names = FALSE, col.names = FALSE, file="/home/federico/Scrivania/Anno2Semestre1/ProgettoMOBD/training_por.txt")
 write.table(val, quote= FALSE, row.names = FALSE, col.names = FALSE, file="/home/federico/Scrivania/Anno2Semestre1/ProgettoMOBD/validation_por.txt")
+write.table(test, quote= FALSE, row.names = FALSE, col.names = FALSE, file="/home/federico/Scrivania/Anno2Semestre1/ProgettoMOBD/test_por.txt")
 
