@@ -1,5 +1,5 @@
 library("dplyr")
-data_por <- read.csv("/home/federico/Scrivania/training_por.csv",stringsAsFactors = F)
+data_por <- read.csv("/home/federico/Scrivania/Anno2Semestre1/ProgettoMOBD/training_por.csv",stringsAsFactors = F)
 type_attribute <- lapply(data_por, class)
 data_rows <- nrow(data_por)
 data_cols <- ncol(data_por)
@@ -70,8 +70,9 @@ train_ind <- sample(seq_len(nrow), size = train_size)
 train <- data_por_final[train_ind, ]
 valtest <- data_por_final[-train_ind, ]
 
-val_size <- floor(0.50 * (nrow - train_size))
-val_ind <- sample(seq_len(nrow - train_size), size = val_size)
+nrowval <- nrow(valtest);
+val_size <- floor(0.5 * nrowval);
+val_ind <- sample(seq_len(nrowval), size = val_size)
 
 val <- valtest[val_ind,]
 test <- valtest[-val_ind, ]

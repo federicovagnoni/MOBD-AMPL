@@ -4,6 +4,8 @@ data project.dat;
 
 param lb;
 param ub;
+param lb_f;
+param ub_f;
 param mean;
 param std;
 
@@ -11,6 +13,17 @@ param std;
 # Read and scale
 include readandscale.run;
 
+for {i in 22..24} {
+	let{p in 1..ptr} xtr2[i-21,p] := xtr[i,p];
+}
+
+for {i in 22..24} {
+	let{p in 1..pval} xval2[i-21,p] := xval[i,p];
+}
+
+for {i in 22..24} {
+	let{p in 1..ptest} xtest2[i-21,p] := xtest[i,p];
+}
 
 
 # Start training
@@ -26,7 +39,7 @@ repeat while (stop_tr == 0 ){
 	let loc_err_tst:=1.e30;
 	
 	#multistart for nl neurons in the hidden layer
-	for {k in 1..20} {
+	for {k in 1..100} {
 				
 		#let{i in 1..nl} w[i] := Uniform(-100,100);	
 		#let{i in 1..n-1, j in 1..nl} c[i,j] := Uniform(-100,100);
@@ -68,6 +81,8 @@ repeat while (stop_tr == 0 ){
 }#while
 
 display best_nl;
+display err_tr;
+display err_val;
 printf "final error on the test set is %f\n", err_tst;
 
 

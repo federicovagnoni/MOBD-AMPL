@@ -5,10 +5,15 @@ param n, integer;	  #numero di features + y
 param nl, integer; 	  #numero di neuroni nello strato nascosto
 
 param xtr{1..n-1, 1..ptr};
+param xtr2{1..3, 1..ptr};
 param ytr{1..ptr};
+
 param xval{1..n-1, 1..pval};
+param xval2{1..3, 1..ptr};
 param yval{1..pval};
+
 param xtest{1..n-1, 1..ptest};
+param xtest2{1..3, 1..ptest};
 param ytest{1..ptest};
 
 param best_nl;
@@ -58,7 +63,7 @@ minimize error_val: (1/pval)*sum{p in 1..pval} abs(sum{j in 1..nl}
 
 minimize error_test: (1/ptest)*sum{p in 1..ptest} abs(sum{j in 1..nl}
 				(v[j]/(1+exp(-(sum{k in 1..n-1} win[k,j]*xtest[k,p] - win[n,j])))) - ytest[p]);
-/*
+
 /*
 
 minimize error_tr: 1/(2.0*ptr)*sum{p in 1..ptr}(sum{j in 1..nl}
