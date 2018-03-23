@@ -20,7 +20,6 @@ data_por_final <- mutate(data_por_final, address_R = ifelse(address == "R", 1, 0
 data_por_final <- mutate(data_por_final, address = NULL)
 data_por_final <- mutate(data_por_final, Pstatus_T = ifelse(Pstatus == "T", 1, 0))
 data_por_final <- mutate(data_por_final, Pstatus_A = ifelse(Pstatus == "A", 1, 0))
-#data_por_final <- mutate(data_por_final, Pstatus_O = ifelse(Pstatus == "O", 1, -1))
 data_por_final <- mutate(data_por_final, Pstatus = NULL)
 
 data_por_final <- mutate(data_por_final, guardian_father = ifelse(guardian == "father", 1, 0))
@@ -64,7 +63,7 @@ data_por_final <- mutate(data_por_final, G3 = NULL)
 data_por_final <- cbind(data_por_final,G3) 
 
 nrow <- nrow(data_por_final)
-train_size <- floor(0.70 * nrow)
+train_size <- floor(0.65 * nrow)
 train_ind <- sample(seq_len(nrow), size = train_size)
 
 train <- data_por_final[train_ind, ]

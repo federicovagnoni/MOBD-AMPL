@@ -1,12 +1,38 @@
 param nl := 2;
 param n := 50;
-param ptr := 318;
-param pval := 68;
-param ptest := 69;
+param ptr := 295;
+param pval := 80;
+param ptest := 80;
 
-param gamma := 0.001;
+param gamma := 0.000001;
 
 param rho1 := 0.001;
 param rho2 := 0.001;
 
 param stop_tr := 0;
+
+param: lbx ubx :=
+1  15 22
+2   0  1
+3   0  4
+4   0  4
+5   1  4
+6   1  4
+7   0  4
+8   0  1
+9   0  1
+10  0  1
+11  0  1
+12  0  1
+13  0  1
+14  0  1
+15  0  1
+16  1  5
+17  1  5
+18  1  5
+19  1  5
+20  1  5
+21  1  5
+22  0  93
+23  0  20
+24  0  20;

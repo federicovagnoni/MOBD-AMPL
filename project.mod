@@ -5,15 +5,15 @@ param n, integer;	  #numero di features + y
 param nl, integer; 	  #numero di neuroni nello strato nascosto
 
 param xtr{1..n-1, 1..ptr};
-param xtr2{1..3, 1..ptr};
+#param xtr2{1..3, 1..ptr};
 param ytr{1..ptr};
 
 param xval{1..n-1, 1..pval};
-param xval2{1..3, 1..ptr};
+#param xval2{1..3, 1..ptr};
 param yval{1..pval};
 
 param xtest{1..n-1, 1..ptest};
-param xtest2{1..3, 1..ptest};
+#param xtest2{1..3, 1..ptest};
 param ytest{1..ptest};
 
 param best_nl;

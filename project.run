@@ -1,5 +1,9 @@
 reset;
 model project.mod;
+
+param lbx{1..24};
+param ubx{1..24};
+
 data project.dat;
 
 param lb;
@@ -13,6 +17,7 @@ param std;
 # Read and scale
 include readandscale.run;
 
+/*
 for {i in 22..24} {
 	let{p in 1..ptr} xtr2[i-21,p] := xtr[i,p];
 }
@@ -24,6 +29,7 @@ for {i in 22..24} {
 for {i in 22..24} {
 	let{p in 1..ptest} xtest2[i-21,p] := xtest[i,p];
 }
+*/
 
 
 # Start training
@@ -47,7 +53,7 @@ repeat while (stop_tr == 0 ){
 		let{z in 1..n, j in 1..nl} win[z,j] := Uniform(-10,10);		
 		
 		option solver knitro;
-		option knitro_options "opttol = 1.0e-5";
+		option knitro_options "opttol = 0.001";
 		option solver_msg 0;
 		solve;
 		

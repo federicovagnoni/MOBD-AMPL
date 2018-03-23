@@ -9,22 +9,22 @@ for {p in 1..ptr}{
 }
 
 # Scale of age
-let lb := min{p in 1..ptr} xtr[1,p];
-let ub := max{p in 1..ptr} xtr[1,p];
+#let lb := min{p in 1..ptr} xtr[1,p];
+#let ub := max{p in 1..ptr} xtr[1,p];
 #let mean := sum{p in 1..ptr} xtr[1,p] / ptr;
-#let std := sqrt( (sum{p in 1..ptr}(xtr[1,p] - mean)^2) / (ptr - 1) );
+#let std := sqrt( (sum{p in 1..ptr}(xtr[1,p] - mean)^2) / (pt)) );
 
-let{p in 1..ptr} xtr[1,p] := (xtr[1,p] - lb) / (ub - lb);
+let{p in 1..ptr} xtr[1,p] := (xtr[1,p] - lbx[1]) / (ubx[1] - lbx[1]);
 #let{p in 1..ptr} xtr[1,p] := (xtr[1,p] - mean) / std;
 
 # Scale of Medu, Fedu, traveltime, studytime, failures
 for {i in 3..7} {
-	let lb := min{p in 1..ptr} xtr[i,p];
-	let ub := max{p in 1..ptr} xtr[i,p];
+	#let lb := min{p in 1..ptr} xtr[i,p];
+	#let ub := max{p in 1..ptr} xtr[i,p];
 	#let mean := sum{p in 1..ptr} xtr[i,p] / ptr;
-	#let std := sqrt( (sum{p in 1..ptr}(xtr[i,p] - mean)^2) / (ptr - 1) );
+	#let std := sqrt( (sum{p in 1..ptr}(xtr[i,p] - mean)^2) / (pt)) );
 
-	let{p in 1..ptr} xtr[i,p] := (xtr[i,p] - lb) / (ub - lb);
+	let{p in 1..ptr} xtr[i,p] := (xtr[i,p] - lbx[i]) / (ubx[i] - lbx[i]);
 	#let{p in 1..ptr} xtr[i,p] := (xtr[i,p] - mean) / std;
 
 }
@@ -34,34 +34,34 @@ for {i in 3..7} {
 #let {p in 1..ptr} xtr[7,p] := -xtr[7,p];
 
 #Scale of famsup
-let lb := min{p in 1..ptr} xtr[9,p];
-let ub := max{p in 1..ptr} xtr[9,p];
+#let lb := min{p in 1..ptr} xtr[9,p];
+#let ub := max{p in 1..ptr} xtr[9,p];
 
-let{p in 1..ptr} xtr[9,p] := (xtr[9,p] - lb) / (ub - lb) ;
+#let{p in 1..ptr} xtr[9,p] := (xtr[9,p] - lbx[9]) / (ubx[9] - lbx[9]);
 
 #Scale of nursery
-let lb := min{p in 1..ptr} xtr[12,p];
-let ub := max{p in 1..ptr} xtr[12,p];
+#let lb := min{p in 1..ptr} xtr[12,p];
+#let ub := max{p in 1..ptr} xtr[12,p];
 
-let{p in 1..ptr} xtr[12,p] := (xtr[12,p] - lb) / (ub - lb);
+#let{p in 1..ptr} xtr[12,p] := (xtr[12,p] - lbx[12]) / (ubx[12] - lbx[12]);
 
 #Scale of higher
-let lb := min{p in 1..ptr} xtr[13,p];
-let ub := max{p in 1..ptr} xtr[13,p];
+#let lb := min{p in 1..ptr} xtr[13,p];
+#let ub := max{p in 1..ptr} xtr[13,p];
 
-let{p in 1..ptr} xtr[13,p] := (xtr[13,p] - lb) / (ub - lb) ;
+#let{p in 1..ptr} xtr[13,p] := (xtr[13,p] - lbx[13]) / (ubx[13] - lbx[13]);
 
 #internet
 #let {p in 1..ptr} xtr[14,p] := -xtr[14,p];
 
 
 for {i in 16..24} {
-	let lb := min{p in 1..ptr} xtr[i,p];
-	let ub := max{p in 1..ptr} xtr[i,p];
+	#let lb := min{p in 1..ptr} xtr[i,p];
+	#let ub := max{p in 1..ptr} xtr[i,p];
 	#let mean := sum{p in 1..ptr} xtr[i,p] / ptr;
-	#let std := sqrt( (sum{p in 1..ptr}(xtr[i,p] - mean)^2) / (ptr - 1) );
+	#let std := sqrt( (sum{p in 1..ptr}(xtr[i,p] - mean)^2) / (pt)) );
 
-	let{p in 1..ptr} xtr[i,p] := (xtr[i,p] - lb) / (ub - lb);
+	let{p in 1..ptr} xtr[i,p] := (xtr[i,p] - lbx[i]) / (ubx[i] - lbx[i]);
 	#let{p in 1..ptr} xtr[i,p] := (xtr[i,p] - mean) / std;
 }
 
@@ -92,7 +92,7 @@ for {i in 16..24} {
 let lb_f := min{p in 1..ptr} ytr[p];
 let ub_f := max{p in 1..ptr} ytr[p];
 #let mean := sum{p in 1..ptr} ytr[p] / ptr;
-#let std := sqrt( (sum{p in 1..ptr}(ytr[p] - mean)^2) / (ptr - 1) );
+#let std := sqrt( (sum{p in 1..ptr}(ytr[p] - mean)^2) / (pt)) );
 
 let{p in 1..ptr} ytr[p] := (ytr[p] - lb_f) / (ub_f - lb_f);
 #let{p in 1..ptr} ytr[p] := (ytr[p] - mean) / std;
@@ -110,23 +110,23 @@ for {p in 1..pval}{
 
 
 # Scale of age
-let lb := min{p in 1..pval} xval[1,p];
-let ub := max{p in 1..pval} xval[1,p];
+#let lb := min{p in 1..pval} xval[1,p];
+#let ub := max{p in 1..pval} xval[1,p];
 #let mean := sum{p in 1..pval} xval[1,p] / ptr;
-#let std := sqrt( (sum{p in 1..pval}(xval[1,p] - mean)^2) / (ptr - 1) );
+#let std := sqrt( (sum{p in 1..pval}(xval[1,p] - mean)^2) / (pt)) );
 
-let{p in 1..pval} xval[1,p] := (xval[1,p] - lb) / (ub - lb);
+let{p in 1..pval} xval[1,p] := (xval[1,p] - lbx[1]) / (ubx[1] - lbx[1]);
 #let{p in 1..pval} xval[1,p] := (xval[1,p] - mean) / std;
 
 
 # Scale of Medu, Fedu, traveltime, studytime, failures
 for {i in 3..7} {
-	let lb := min{p in 1..pval} xval[i,p];
-	let ub := max{p in 1..pval} xval[i,p];
+	#let lb := min{p in 1..pval} xval[i,p];
+	#let ub := max{p in 1..pval} xval[i,p];
 	#let mean := sum{p in 1..pval} xval[i,p] / ptr;
-	#let std := sqrt( (sum{p in 1..pval}(xval[i,p] - mean)^2) / (ptr - 1) );
+	#let std := sqrt( (sum{p in 1..pval}(xval[i,p] - mean)^2) / (pt)) );
 
-	let{p in 1..pval} xval[i,p] := (xval[i,p] - lb) / (ub - lb);
+	let{p in 1..pval} xval[i,p] := (xval[i,p] - lbx[i]) / (ubx[i] - lbx[i]);
 	#let{p in 1..pval} xval[i,p] := (xval[i,p] - mean) / std;
 }
 
@@ -135,34 +135,34 @@ for {i in 3..7} {
 #let {p in 1..pval} xval[7,p] := -xval[7,p];
 
 #Scale of famsup
-let lb := min{p in 1..pval} xval[9,p];
-let ub := max{p in 1..pval} xval[9,p];
+#let lb := min{p in 1..pval} xval[9,p];
+#let ub := max{p in 1..pval} xval[9,p];
 
-let{p in 1..pval} xval[9,p] := (xval[9,p] - lb) / (ub - lb);
+#let{p in 1..pval} xval[9,p] := (xval[9,p] - lbx[9]) / (ubx[9] - lbx[9]);
 
 #Scale of nursery
-let lb := min{p in 1..pval} xval[12,p];
-let ub := max{p in 1..pval} xval[12,p];
+#let lb := min{p in 1..pval} xval[12,p];
+#let ub := max{p in 1..pval} xval[12,p];
 
-let{p in 1..pval} xval[12,p] := (xval[12,p] - lb) / (ub - lb);
+#let{p in 1..pval} xval[12,p] := (xval[12,p] - lbx[12]) / (ubx[12] - lbx[12]);
 
 #Scale of higher
-let lb := min{p in 1..pval} xval[13,p];
-let ub := max{p in 1..pval} xval[13,p];
+#let lb := min{p in 1..pval} xval[13,p];
+#let ub := max{p in 1..pval} xval[13,p];
 
-let{p in 1..pval} xval[13,p] := (xval[13,p] - lb) / (ub - lb);
+#let{p in 1..pval} xval[13,p] := (xval[13,p] - lbx[13]) / (ubx[13] - lbx[13]);
 
 #internet
 #let {p in 1..pval} xval[14,p] := -xval[14,p];
 
 
 for {i in 16..24} {
-	let lb := min{p in 1..pval} xval[i,p];
-	let ub := max{p in 1..pval} xval[i,p];
+	#let lb := min{p in 1..pval} xval[i,p];
+	#let ub := max{p in 1..pval} xval[i,p];
 	#let mean := sum{p in 1..pval} xval[i,p] / ptr;
-	#let std := sqrt( (sum{p in 1..pval}(xval[i,p] - mean)^2) / (ptr - 1) );
+	#let std := sqrt( (sum{p in 1..pval}(xval[i,p] - mean)^2) / (pt)) );
 
-	let{p in 1..pval} xval[i,p] := (xval[i,p] - lb) / (ub - lb);
+	let{p in 1..pval} xval[i,p] := (xval[i,p] - lbx[i]) / (ubx[i] - lbx[i]);
 	#let{p in 1..pval} xval[i,p] := (xval[i,p] - mean) / std;
 }
 
@@ -193,7 +193,7 @@ for {i in 16..24} {
 #let lb := min{p in 1..pval} yval[p];
 #let ub := max{p in 1..pval} yval[p];
 #let mean := sum{p in 1..pval} yval[p] / ptr;
-#let std := sqrt( (sum{p in 1..pval}(yval[p] - mean)^2) / (ptr - 1) );
+#let std := sqrt( (sum{p in 1..pval}(yval[p] - mean)^2) / (pt)) );
 
 let{p in 1..pval} yval[p] := (yval[p] - lb_f) / (ub_f - lb_f);
 #let{p in 1..pval} yval[p] := (yval[p] - mean) / std;
@@ -211,23 +211,23 @@ for {p in 1..ptest}{
 
 
 # Scale of age
-let lb := min{p in 1..ptest} xtest[1,p];
-let ub := max{p in 1..ptest} xtest[1,p];
+#let lb := min{p in 1..ptest} xtest[1,p];
+#let ub := max{p in 1..ptest} xtest[1,p];
 #let mean := sum{p in 1..ptest} xtest[1,p] / ptr;
-#let std := sqrt( (sum{p in 1..ptest}(xtest[1,p] - mean)^2) / (ptr - 1) );
+#let std := sqrt( (sum{p in 1..ptest}(xtest[1,p] - mean)^2) / (pt)) );
 
-let{p in 1..ptest} xtest[1,p] := (xtest[1,p] - lb) / (ub - lb);
+let{p in 1..ptest} xtest[1,p] :=  (xtest[1,p] - lbx[1]) / (ubx[1] - lbx[1]);
 #let{p in 1..ptest} xtest[1,p] := (xtest[1,p] - mean) / std;
 
 
 # Scale of Medu, Fedu, traveltime, studytime, failures
 for {i in 3..7} {
-	let lb := min{p in 1..ptest} xtest[i,p];
-	let ub := max{p in 1..ptest} xtest[i,p];
+	#let lb := min{p in 1..ptest} xtest[i,p];
+	#let ub := max{p in 1..ptest} xtest[i,p];
 	#let mean := sum{p in 1..ptest} xtest[i,p] / ptr;
-	#let std := sqrt( (sum{p in 1..ptest}(xtest[i,p] - mean)^2) / (ptr - 1) );
+	#let std := sqrt( (sum{p in 1..ptest}(xtest[i,p] - mean)^2) / (pt)) );
 
-	let{p in 1..ptest} xtest[i,p] := (xtest[i,p] - lb) / (ub - lb);
+	let{p in 1..ptest} xtest[i,p] := (xtest[i,p] - lbx[i]) / (ubx[i] - lbx[i]);
 	#let{p in 1..ptest} xtest[i,p] := (xtest[i,p] - mean) / std;
 }
 
@@ -236,22 +236,22 @@ for {i in 3..7} {
 #let {p in 1..ptest} xtest[7,p] := -xtest[7,p];
 
 #Scale of famsup
-let lb := min{p in 1..ptest} xtest[9,p];
-let ub := max{p in 1..ptest} xtest[9,p];
+#let lb := min{p in 1..ptest} xtest[9,p];
+#let ub := max{p in 1..ptest} xtest[9,p];
 
-let{p in 1..ptest} xtest[9,p] := (xtest[9,p] - lb) / (ub - lb);
+#let{p in 1..ptest} xtest[9,p] := (xtest[9,p] - lbx[9]) / (ubx[9] - lbx[9]);
 
 #Scale of nursery
-let lb := min{p in 1..ptest} xtest[12,p];
-let ub := max{p in 1..ptest} xtest[12,p];
+#let lb := min{p in 1..ptest} xtest[12,p];
+#let ub := max{p in 1..ptest} xtest[12,p];
 
-let{p in 1..ptest} xtest[12,p] := (xtest[12,p] - lb) / (ub - lb);
+#let{p in 1..ptest} xtest[12,p] := (xtest[12,p] - lbx[12]) / (ubx[12] - lbx[12]);
 
 #Scale of higher
-let lb := min{p in 1..ptest} xtest[13,p];
-let ub := max{p in 1..ptest} xtest[13,p];
+#let lb := min{p in 1..ptest} xtest[13,p];
+#let ub := max{p in 1..ptest} xtest[13,p];
 
-let{p in 1..ptest} xtest[13,p] := (xtest[13,p] - lb) / (ub - lb);
+#let{p in 1..ptest} xtest[13,p] := (xtest[13,p] - lbx[12]) / (ubx[12] - lbx[12]);
 
 #internet
 #let {p in 1..ptest} xtest[14,p] := -xtest[14,p];
@@ -259,12 +259,12 @@ let{p in 1..ptest} xtest[13,p] := (xtest[13,p] - lb) / (ub - lb);
 
 
 for {i in 16..24} {
-	let lb := min{p in 1..ptest} xtest[i,p];
-	let ub := max{p in 1..ptest} xtest[i,p];
+	#let lb := min{p in 1..ptest} xtest[i,p];
+	#let ub := max{p in 1..ptest} xtest[i,p];
 	#let mean := sum{p in 1..ptest} xtest[i,p] / ptr;
-	#let std := sqrt( (sum{p in 1..ptest}(xtest[i,p] - mean)^2) / (ptr - 1) );
+	#let std := sqrt( (sum{p in 1..ptest}(xtest[i,p] - mean)^2) / (pt)) );
 
-	let{p in 1..ptest} xtest[i,p] := (xtest[i,p] - lb) / (ub - lb);
+	let{p in 1..ptest} xtest[i,p] := (xtest[i,p] - lbx[i]) / (ubx[i] - lbx[i]);
 	#let{p in 1..ptest} xtest[i,p] := (xtest[i,p] - mean) / std;
 }
 
@@ -295,7 +295,7 @@ for {i in 16..24} {
 #let lb := min{p in 1..ptest} ytest[p];
 #let ub := max{p in 1..ptest} ytest[p];
 #let mean := sum{p in 1..ptest} ytest[p] / ptr;
-#let std := sqrt( (sum{p in 1..ptest}(ytest[p] - mean)^2) / (ptr - 1) );
+#let std := sqrt( (sum{p in 1..ptest}(ytest[p] - mean)^2) / (pt)) );
 
 let{p in 1..ptest} ytest[p] := (ytest[p] - lb_f) / (ub_f - lb_f);
 #let{p in 1..ptest} ytest[p] := (ytest[p] - mean) / std;
