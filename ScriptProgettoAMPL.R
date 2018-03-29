@@ -63,20 +63,20 @@ data_por_final <- mutate(data_por_final, G3 = NULL)
 data_por_final <- cbind(data_por_final,G3) 
 
 nrow <- nrow(data_por_final)
-train_size <- floor(0.65 * nrow)
+train_size <- floor(0.75 * nrow)
 train_ind <- sample(seq_len(nrow), size = train_size)
 
 train <- data_por_final[train_ind, ]
-valtest <- data_por_final[-train_ind, ]
+val <- data_por_final[-train_ind, ]
 
-nrowval <- nrow(valtest);
-val_size <- floor(0.5 * nrowval);
-val_ind <- sample(seq_len(nrowval), size = val_size)
+#nrowval <- nrow(valtest);
+#val_size <- floor(0.5 * nrowval);
+#val_ind <- sample(seq_len(nrowval), size = val_size)
 
-val <- valtest[val_ind,]
-test <- valtest[-val_ind, ]
+#val <- valtest[val_ind,]
+#test <- valtest[-val_ind, ]
 
 write.table(train, quote= FALSE, row.names = FALSE, col.names = FALSE, file="/home/federico/Scrivania/Anno2Semestre1/ProgettoMOBD/training_por.txt")
 write.table(val, quote= FALSE, row.names = FALSE, col.names = FALSE, file="/home/federico/Scrivania/Anno2Semestre1/ProgettoMOBD/validation_por.txt")
-write.table(test, quote= FALSE, row.names = FALSE, col.names = FALSE, file="/home/federico/Scrivania/Anno2Semestre1/ProgettoMOBD/test_por.txt")
+#write.table(test, quote= FALSE, row.names = FALSE, col.names = FALSE, file="/home/federico/Scrivania/Anno2Semestre1/ProgettoMOBD/test_por.txt")
 

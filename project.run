@@ -35,17 +35,17 @@ for {i in 22..24} {
 # Start training
 let err_tr := 1.e30;
 let err_val := 1.e30;
-let err_tst := 1.e30;
+#let err_tst := 1.e30;
 
 
-repeat while (stop_tr == 0 ){
+repeat while (stop_tr == 0){
 	
 	let loc_err_tr := 1.e30;
 	let loc_err_val := 1.e30;
-	let loc_err_tst:=1.e30;
+	#let loc_err_tst:=1.e30;
 	
 	#multistart for nl neurons in the hidden layer
-	for {k in 1..100} {
+	for {k in 1..150} {
 				
 		#let{i in 1..nl} w[i] := Uniform(-100,100);	
 		#let{i in 1..n-1, j in 1..nl} c[i,j] := Uniform(-100,100);
@@ -62,7 +62,7 @@ repeat while (stop_tr == 0 ){
 			printf "error on validation improved: old %f new %f\n", loc_err_val, error_val;
 			let loc_err_val := error_val;
 			let loc_err_tr := error_tr;
-			let loc_err_tst:= error_test;
+			#let loc_err_tst:= error_test;
 
 		}
 		let best_k_loc := k;
@@ -78,7 +78,7 @@ repeat while (stop_tr == 0 ){
 		let nl := nl+1;
 		let err_val := loc_err_val;
 		let err_tr := loc_err_tr;
-		let err_tst := loc_err_tst;
+		#let err_tst := loc_err_tst;
 
 	}
 	else 
@@ -89,7 +89,7 @@ repeat while (stop_tr == 0 ){
 display best_nl;
 display err_tr;
 display err_val;
-printf "final error on the test set is %f\n", err_tst;
+#printf "final error on the test set is %f\n", err_tst;
 
 
 

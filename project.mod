@@ -12,9 +12,9 @@ param xval{1..n-1, 1..pval};
 #param xval2{1..3, 1..ptr};
 param yval{1..pval};
 
-param xtest{1..n-1, 1..ptest};
+#param xtest{1..n-1, 1..ptest};
 #param xtest2{1..3, 1..ptest};
-param ytest{1..ptest};
+#param ytest{1..ptest};
 
 param best_nl;
 param err_val;
@@ -22,7 +22,7 @@ param err_tr;
 param err_tst;
 param loc_err_tr;
 param loc_err_val;
-param loc_err_tst;
+#param loc_err_tst;
 param stop_tr;
 param best_k;
 param best_k_loc;
@@ -55,14 +55,14 @@ minimize error_test: (1/ptest)*sum{p in 1..ptest}abs(sum{j in 1..nl}
 */
 
 minimize error_tr: 1/(2.0*ptr)*sum{p in 1..ptr}(sum{j in 1..nl}
-				(v[j]/(1+exp(-(sum{k in 1..n-1} win[k,j]*xtr[k,p] - win[n,j])))) - ytr[p])^2
+				(v[j]/(1 + exp(-(sum{k in 1..n-1} win[k,j]*xtr[k,p] - win[n,j])))) - ytr[p])^2
 				+ 0.5 * gamma * sum{i in 1..n, j in 1..nl} (win[i,j]^2+v[j]^2);
 
 minimize error_val: (1/pval)*sum{p in 1..pval} abs(sum{j in 1..nl}
-				(v[j]/(1+exp(-(sum{k in 1..n-1} win[k,j]*xval[k,p] - win[n,j])))) - yval[p]);
+				(v[j]/(1 + exp(-(sum{k in 1..n-1} win[k,j]*xval[k,p] - win[n,j])))) - yval[p]);
 
-minimize error_test: (1/ptest)*sum{p in 1..ptest} abs(sum{j in 1..nl}
-				(v[j]/(1+exp(-(sum{k in 1..n-1} win[k,j]*xtest[k,p] - win[n,j])))) - ytest[p]);
+#minimize error_test: (1/ptest)*sum{p in 1..ptest} abs(sum{j in 1..nl}
+#				(v[j]/(1 + exp(-(sum{k in 1..n-1} win[k,j]*xtest[k,p] - win[n,j])))) - ytest[p]);
 
 /*
 
