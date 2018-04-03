@@ -13,6 +13,9 @@ param ub_f;
 param mean;
 param std;
 
+let lb_f := 0;
+let ub_f := 20;
+
 
 # Read and scale
 include readandscale.run;

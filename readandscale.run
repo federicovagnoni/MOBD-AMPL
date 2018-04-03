@@ -13,7 +13,7 @@ for {p in 1..ptr}{
 
 let{p in 1..ptr} xtr[1,p] := (xtr[1,p] - lbx[1]) / (ubx[1] - lbx[1]);
 
-#let{p in 1..ptr} xtr[5,p] := ubx[5] + lbx[5] - xtr[5,p];
+let{p in 1..ptr} xtr[5,p] := ubx[5] + lbx[5] - xtr[5,p];
 
 
 # Scale of Medu, Fedu, traveltime, studytime, failures
@@ -21,11 +21,11 @@ for {i in 3..7} {
 	let{p in 1..ptr} xtr[i,p] := (xtr[i,p] - lbx[i]) / (ubx[i] - lbx[i]);
 }
 
-#for {i in 17..21} {
-#	let{p in 1..ptr} xtr[i,p] := ubx[i] + lbx[i] - xtr[i,p];
-#}
+for {i in 17..20} {
+	let{p in 1..ptr} xtr[i,p] := ubx[i] + lbx[i] - xtr[i,p];
+}
 
-#let{p in 1..ptr} xtr[22,p] := ubx[22] + lbx[22] - xtr[22,p];
+let{p in 1..ptr} xtr[22,p] := ubx[22] + lbx[22] - xtr[22,p];
 
 
 for {i in 16..24} {
@@ -33,8 +33,8 @@ for {i in 16..24} {
 }
 
 # Scale G3
-let lb_f := min{p in 1..ptr} ytr[p];
-let ub_f := max{p in 1..ptr} ytr[p];
+#let lb_f := min{p in 1..ptr} ytr[p];
+#let ub_f := max{p in 1..ptr} ytr[p];
 
 let{p in 1..ptr} ytr[p] := (ytr[p] - lb_f) / (ub_f - lb_f);
 
@@ -58,7 +58,7 @@ for {p in 1..pval}{
 
 let{p in 1..pval} xval[1,p] := (xval[1,p] - lbx[1]) / (ubx[1] - lbx[1]);
 
-#let{p in 1..pval} xval[5,p] := ubx[5] + lbx[5] - xval[5,p];
+let{p in 1..pval} xval[5,p] := ubx[5] + lbx[5] - xval[5,p];
 
 
 # Scale of Medu, Fedu, traveltime, studytime, failures
@@ -66,9 +66,9 @@ for {i in 3..7} {
 	let{p in 1..pval} xval[i,p] := (xval[i,p] - lbx[i]) / (ubx[i] - lbx[i]);
 }
 
-#for {i in 17..21} {
-#	let{p in 1..pval} xval[i,p] := ubx[i] + lbx[i] - xval[i,p];
-#}
+for {i in 17..20} {
+	let{p in 1..pval} xval[i,p] := ubx[i] + lbx[i] - xval[i,p];
+}
 
 let{p in 1..pval} xval[22,p] := ubx[22] + lbx[22] - xval[22,p];
 

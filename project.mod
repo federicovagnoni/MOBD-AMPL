@@ -48,11 +48,12 @@ minimize error_val: (1/pval) * sum{p in 1..pval} abs( sum{j in 1..nl}
 				(1 - exp(-(sum{k in 1..n-1} win[k,j]*xval[k,p] - win[n,j])))/
 				(1 + exp(-(sum{k in 1..n-1} win[k,j]*xval[k,p] - win[n,j]))) - yval[p]);
 
-minimize error_test: (1/ptest)*sum{p in 1..ptest}abs(sum{j in 1..nl}
-				v[j]*
-				(1 - exp(-(sum{k in 1..n-1} win[k,j]*xtest[k,p] - win[n,j])))/
-				(1 + exp(-(sum{k in 1..n-1} win[k,j]*xtest[k,p] - win[n,j]))) - ytest[p]);
+#minimize error_test: (1/ptest)*sum{p in 1..ptest}abs(sum{j in 1..nl}
+#				v[j]*
+#				(1 - exp(-(sum{k in 1..n-1} win[k,j]*xtest[k,p] - win[n,j])))/
+#s				(1 + exp(-(sum{k in 1..n-1} win[k,j]*xtest[k,p] - win[n,j]))) - ytest[p]);
 */
+
 
 minimize error_tr: 1/(2.0*ptr)*sum{p in 1..ptr}(sum{j in 1..nl}
 				(v[j]/(1 + exp(-(sum{k in 1..n-1} win[k,j]*xtr[k,p] - win[n,j])))) - ytr[p])^2
@@ -60,6 +61,8 @@ minimize error_tr: 1/(2.0*ptr)*sum{p in 1..ptr}(sum{j in 1..nl}
 
 minimize error_val: (1/pval)*sum{p in 1..pval} abs(sum{j in 1..nl}
 				(v[j]/(1 + exp(-(sum{k in 1..n-1} win[k,j]*xval[k,p] - win[n,j])))) - yval[p]);
+
+
 
 #minimize error_test: (1/ptest)*sum{p in 1..ptest} abs(sum{j in 1..nl}
 #				(v[j]/(1 + exp(-(sum{k in 1..n-1} win[k,j]*xtest[k,p] - win[n,j])))) - ytest[p]);
