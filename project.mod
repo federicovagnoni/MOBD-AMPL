@@ -4,6 +4,7 @@ param ptest, integer; #numeri di elementi nel test set
 param n, integer;	  #numero di features + y
 param nl, integer; 	  #numero di neuroni nello strato nascosto
 
+
 param xtr{1..n-1, 1..ptr};
 #param xtr2{1..3, 1..ptr};
 param ytr{1..ptr};
@@ -26,8 +27,13 @@ param loc_err_val;
 param stop_tr;
 param best_k;
 param best_k_loc;
+param nmax;
+param rangeinf;
+param rangesup;
 
 param gamma;
+param c;
+param seed;
 param rho1;
 param rho2;
 
@@ -37,6 +43,7 @@ var v{1..nl};
 #var c{1..n-1, 1..nl};
 
 /*
+#TanH function
 minimize error_tr: (0.5/ptr) * sum{p in 1..ptr} ( sum{j in 1..nl}
 				v[j]*
 				(1 - exp(-(sum{k in 1..n-1} win[k,j]*xtr[k,p] - win[n,j])))/
@@ -48,38 +55,32 @@ minimize error_val: (1/pval) * sum{p in 1..pval} abs( sum{j in 1..nl}
 				(1 - exp(-(sum{k in 1..n-1} win[k,j]*xval[k,p] - win[n,j])))/
 				(1 + exp(-(sum{k in 1..n-1} win[k,j]*xval[k,p] - win[n,j]))) - yval[p]);
 
-#minimize error_test: (1/ptest)*sum{p in 1..ptest}abs(sum{j in 1..nl}
-#				v[j]*
-#				(1 - exp(-(sum{k in 1..n-1} win[k,j]*xtest[k,p] - win[n,j])))/
-#s				(1 + exp(-(sum{k in 1..n-1} win[k,j]*xtest[k,p] - win[n,j]))) - ytest[p]);
 */
 
-
+#Logistic function
 minimize error_tr: 1/(2.0*ptr)*sum{p in 1..ptr}(sum{j in 1..nl}
-				(v[j]/(1 + exp(-(sum{k in 1..n-1} win[k,j]*xtr[k,p] - win[n,j])))) - ytr[p])^2
+				(v[j]/(1 + exp(- c * (sum{k in 1..n-1} win[k,j]*xtr[k,p] - win[n,j])))) - ytr[p])^2
 				+ 0.5 * gamma * sum{i in 1..n, j in 1..nl} (win[i,j]^2+v[j]^2);
 
 minimize error_val: (1/pval)*sum{p in 1..pval} abs(sum{j in 1..nl}
-				(v[j]/(1 + exp(-(sum{k in 1..n-1} win[k,j]*xval[k,p] - win[n,j])))) - yval[p]);
-
-
-
-#minimize error_test: (1/ptest)*sum{p in 1..ptest} abs(sum{j in 1..nl}
-#				(v[j]/(1 + exp(-(sum{k in 1..n-1} win[k,j]*xtest[k,p] - win[n,j])))) - ytest[p]);
+				(v[j]/(1 + exp(- c * (sum{k in 1..n-1} win[k,j]*xval[k,p] - win[n,j])))) - yval[p]);
 
 /*
 
+
+#Gauss function
 minimize error_tr: 1/(2.0*ptr)*sum{p in 1..ptr}(sum{j in 1..nl}
-				(v[j]/(1+exp(-(sum{k in 1..n-1} win[k,j]*xtr[k,p] - win[n,j])))) - ytr[p])^2
+				(v[j]*(exp(-(sum{k in 1..n-1} win[k,j]*xtr[k,p] - win[n,j])^2))) - ytr[p])^2
 				+ 0.5 * gamma * sum{i in 1..n, j in 1..nl} (win[i,j]^2+v[j]^2);
 
 minimize error_val: (1/pval)*sum{p in 1..pval} abs(sum{j in 1..nl}
-				(v[j]/(1+exp(-(sum{k in 1..n-1} win[k,j]*xval[k,p] - win[n,j])))) - yval[p]);
+				(v[j]*(exp(-(sum{k in 1..n-1} win[k,j]*xval[k,p] - win[n,j])^2))) - yval[p]);
+				
 
-			
-*/		
+	
 
 /*
+#RBF
 minimize error_tr: 0.5 * sum{p in 1..ptr} (sum{i in 1..nl}(	
 				 	w[i]*exp(-sum{k in 1..n-1} (xtr[k,p] - c[k,i])^2) - ytr[p]))^2
 					 + 0.5 * rho1 * sum{i in 1..nl} w[i]^2

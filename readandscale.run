@@ -9,12 +9,13 @@ for {p in 1..ptr}{
 }
 
 
-#let{p in 1..ptr} xtr[1,p] := ubx[1] + lbx[1] - xtr[1,p];
+let{p in 1..ptr} xtr[1,p] := ubx[1] + lbx[1] - xtr[1,p];
 
 let{p in 1..ptr} xtr[1,p] := (xtr[1,p] - lbx[1]) / (ubx[1] - lbx[1]);
 
 let{p in 1..ptr} xtr[5,p] := ubx[5] + lbx[5] - xtr[5,p];
 
+let{p in 1..ptr} xtr[7,p] := ubx[7] + lbx[7] - xtr[7,p];
 
 # Scale of Medu, Fedu, traveltime, studytime, failures
 for {i in 3..7} {
@@ -24,6 +25,8 @@ for {i in 3..7} {
 for {i in 17..20} {
 	let{p in 1..ptr} xtr[i,p] := ubx[i] + lbx[i] - xtr[i,p];
 }
+
+#let{p in 1..ptr} xtr[21,p] := ubx[21] + lbx[21] - xtr[21,p];
 
 let{p in 1..ptr} xtr[22,p] := ubx[22] + lbx[22] - xtr[22,p];
 
@@ -54,12 +57,13 @@ for {p in 1..pval}{
 
 # Scale of age
 
-#let{p in 1..pval} xval[1,p] := ubx[1] + lbx[1] - xval[1,p];
+let{p in 1..pval} xval[1,p] := ubx[1] + lbx[1] - xval[1,p];
 
 let{p in 1..pval} xval[1,p] := (xval[1,p] - lbx[1]) / (ubx[1] - lbx[1]);
 
 let{p in 1..pval} xval[5,p] := ubx[5] + lbx[5] - xval[5,p];
 
+let{p in 1..pval} xval[7,p] := ubx[7] + lbx[7] - xval[7,p];
 
 # Scale of Medu, Fedu, traveltime, studytime, failures
 for {i in 3..7} {
@@ -69,6 +73,8 @@ for {i in 3..7} {
 for {i in 17..20} {
 	let{p in 1..pval} xval[i,p] := ubx[i] + lbx[i] - xval[i,p];
 }
+
+#let{p in 1..pval} xval[21,p] := ubx[21] + lbx[21] - xval[21,p];
 
 let{p in 1..pval} xval[22,p] := ubx[22] + lbx[22] - xval[22,p];
 

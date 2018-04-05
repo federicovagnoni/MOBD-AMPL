@@ -63,7 +63,7 @@ data_por_final <- mutate(data_por_final, G3 = NULL)
 data_por_final <- cbind(data_por_final,G3) 
 
 nrow <- nrow(data_por_final)
-train_size <- floor(0.70 * nrow)
+train_size <- floor(0.75 * nrow)
 train_ind <- sample(seq_len(nrow), size = train_size)
 
 train <- data_por_final[train_ind, ]

@@ -6,6 +6,11 @@ param ubx{1..24};
 
 data project.dat;
 
+#best 1522932968287072 0.034581
+#best 304586335471 0.034375
+#best 304586421275 0.0341056
+option randseed 0;
+
 param lb;
 param ub;
 param lb_f;
@@ -48,12 +53,12 @@ repeat while (stop_tr == 0){
 	#let loc_err_tst:=1.e30;
 	
 	#multistart for nl neurons in the hidden layer
-	for {k in 1..150} {
+	for {k in 1..nmax} {
 				
 		#let{i in 1..nl} w[i] := Uniform(-100,100);	
 		#let{i in 1..n-1, j in 1..nl} c[i,j] := Uniform(-100,100);
-		let{i in 1..nl} v[i] := Uniform(-10,10);
-		let{z in 1..n, j in 1..nl} win[z,j] := Uniform(-10,10);		
+		let{i in 1..nl} v[i] := Uniform(rangeinf,rangesup);
+		let{z in 1..n, j in 1..nl} win[z,j] := Uniform(rangeinf,rangesup);		
 		
 		option solver knitro;
 		option knitro_options "opttol = 0.001";
@@ -93,6 +98,14 @@ display best_nl;
 display err_tr;
 display err_val;
 #printf "final error on the test set is %f\n", err_tst;
+
+param value{1..pval};
+
+for {p in 1..pval} {
+	let value[p] := sum{j in 1..nl}(v[j]/(1 + exp(-(sum{k in 1..n-1} win[k,j]*xval[k,p] - win[n,j]))));
+	let value[p] := value[p] * (ub_f - lb_f) + lb_f;
+	#display value[p];
+}
 
 
 
