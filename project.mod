@@ -34,13 +34,9 @@ param rangesup;
 param gamma;
 param c;
 param seed;
-param rho1;
-param rho2;
 
 var win{1..n, 1..nl};
 var v{1..nl};
-#var w{1..nl};
-#var c{1..n-1, 1..nl};
 
 /*
 #TanH function

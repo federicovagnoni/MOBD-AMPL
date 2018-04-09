@@ -1,16 +1,15 @@
 param nl := 2;
 param n := 50;
-param ptr := 341;
-param pval := 114;
+param ptr;
+param pval;
 #param ptest := 69;
 
 param gamma := 0.000006;
-param c := 0.4;
-param nmax := 100;
+param c := 3;
+param nmax := 150;
 
 param rangeinf := -10;
 param rangesup := 10;
-
 
 
 # 0.0335865
@@ -22,10 +21,10 @@ param nmax := 100;
 
 param rangeinf := -10;
 param rangesup := 10;
-*/
 
-param rho1 := 0.001;
-param rho2 := 0.001;
+seed 1523177691204678
+0.0334824
+*/
 
 param stop_tr := 0;
 

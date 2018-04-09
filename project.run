@@ -5,11 +5,12 @@ param lbx{1..24};
 param ubx{1..24};
 
 data project.dat;
+display "ciao";
 
 #best 1522932968287072 0.034581
 #best 304586335471 0.034375
 #best 304586421275 0.0341056
-option randseed 0;
+option randseed 1523177691204678;
 
 param lb;
 param ub;
@@ -102,7 +103,7 @@ display err_val;
 param value{1..pval};
 
 for {p in 1..pval} {
-	let value[p] := sum{j in 1..nl}(v[j]/(1 + exp(-(sum{k in 1..n-1} win[k,j]*xval[k,p] - win[n,j]))));
+	let value[p] := sum{j in 1..nl}(v[j]/(1 + exp(- c * (sum{k in 1..n-1} win[k,j]*xval[k,p] - win[n,j]))));
 	let value[p] := value[p] * (ub_f - lb_f) + lb_f;
 	#display value[p];
 }
