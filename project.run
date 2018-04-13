@@ -1,63 +1,51 @@
 reset;
 model project.mod;
-
-param lbx{1..24};
-param ubx{1..24};
-
 data project.dat;
-display "ciao";
 
-#best 1522932968287072 0.034581
-#best 304586335471 0.034375
-#best 304586421275 0.0341056
-option randseed 1523177691204678;
+option randseed 304707912456;	# optimal seed value setup
+#sedbono 304707591634 
 
-param lb;
-param ub;
 param lb_f;
 param ub_f;
-param mean;
-param std;
 
+
+# lower and upper bound defined for G3
 let lb_f := 0;
 let ub_f := 20;
+
+# file names
+param file_log symbolic;
+param file_w symbolic;
+param file_v symbolic;
+param file_tr symbolic;
+param file_val symbolic;
+param file_test symbolic;
+param file_output symbolic;
 
 
 # Read and scale
 include readandscale.run;
 
-/*
-for {i in 22..24} {
-	let{p in 1..ptr} xtr2[i-21,p] := xtr[i,p];
-}
-
-for {i in 22..24} {
-	let{p in 1..pval} xval2[i-21,p] := xval[i,p];
-}
-
-for {i in 22..24} {
-	let{p in 1..ptest} xtest2[i-21,p] := xtest[i,p];
-}
-*/
-
 
 # Start training
 let err_tr := 1.e30;
 let err_val := 1.e30;
-#let err_tst := 1.e30;
+let err_test := 1.e30;
+let file_log:=("NN_log.txt");
 
 
 repeat while (stop_tr == 0){
 	
 	let loc_err_tr := 1.e30;
 	let loc_err_val := 1.e30;
-	#let loc_err_tst:=1.e30;
+	let loc_err_test := 1.e30;
+
+	printf "------------------------------------------------------\n" > (file_log);	
+	printf "training of the nn with %d neurons in the hidden layer\n", nl > (file_log);	
+	printf "------------------------------------------------------\n" > (file_log);	
 	
 	#multistart for nl neurons in the hidden layer
 	for {k in 1..nmax} {
-				
-		#let{i in 1..nl} w[i] := Uniform(-100,100);	
-		#let{i in 1..n-1, j in 1..nl} c[i,j] := Uniform(-100,100);
 		let{i in 1..nl} v[i] := Uniform(rangeinf,rangesup);
 		let{z in 1..n, j in 1..nl} win[z,j] := Uniform(rangeinf,rangesup);		
 		
@@ -65,16 +53,29 @@ repeat while (stop_tr == 0){
 		option knitro_options "opttol = 0.001";
 		option solver_msg 0;
 		solve;
+		printf "errore sul training set: %f\n", error_tr >> (file_log);
+		printf "errore sul validation set: %f\n", error_val >> (file_log);
+		printf "errore sul test set: %f\n", error_test >> (file_log);
 		
 		#saving best error on the validation set for nl neurons
 		if (error_val <= loc_err_val) then { 
 			printf "error on validation improved: old %f new %f\n", loc_err_val, error_val;
 			let loc_err_val := error_val;
 			let loc_err_tr := error_tr;
-			#let loc_err_tst:= error_test;
+			let loc_err_test := error_test;
 
+
+			#saving the corresponding parameters in two files
+			let file_w:=("NNwin" & "_" & nl & "_" & k & ".txt");
+			let file_v:=("NNwin" & "_" & nl & "_" & k & ".txt");
+
+			for {i in 1..n, j in 1..nl}
+						printf "%f\n",win[i,j] >(file_w) ;
+			for {i in 1..nl}
+						printf "%f\n",v[i] >(file_v);
+
+			let best_k_loc := k;						
 		}
-		let best_k_loc := k;
 	} 
 
 	#check for a global improvement on the validation set
@@ -87,7 +88,7 @@ repeat while (stop_tr == 0){
 		let nl := nl+1;
 		let err_val := loc_err_val;
 		let err_tr := loc_err_tr;
-		#let err_tst := loc_err_tst;
+		let err_test:=loc_err_test;
 
 	}
 	else 
@@ -95,18 +96,12 @@ repeat while (stop_tr == 0){
 		let stop_tr := 1;
 }#while
 
+printf "final error on the test set is %f\n",err_test >> (file_log);
+update data nl, win,v;
+let nl := best_nl;
+let file_w := ("NNwin" & "_" & best_nl & "_" & best_k & ".txt");
+let file_v := ("NNv" & "_" & best_nl & "_" & best_k & "..txt");
 display best_nl;
 display err_tr;
 display err_val;
-#printf "final error on the test set is %f\n", err_tst;
-
-param value{1..pval};
-
-for {p in 1..pval} {
-	let value[p] := sum{j in 1..nl}(v[j]/(1 + exp(- c * (sum{k in 1..n-1} win[k,j]*xval[k,p] - win[n,j]))));
-	let value[p] := value[p] * (ub_f - lb_f) + lb_f;
-	#display value[p];
-}
-
-
-
+display err_test;

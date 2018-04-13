@@ -1,187 +1,136 @@
 # ----------------------------------
 # Lettura e scaling del training set
 # ----------------------------------
-read ptr < training_por.txt;
+read ptr < (trainingFile);
 for {p in 1..ptr}{
 	for {k in 1..n-1}{
-		read xtr[k,p] < training_por.txt;
+		read xtr[k,p] < (trainingFile);
 	}
-	read ytr[p] < training_por.txt;
+	read ytr[p] < (trainingFile);
 }
 
-param mu;
-param s;
-
-
+# Age values inversion
 let{p in 1..ptr} xtr[1,p] := ubx[1] + lbx[1] - xtr[1,p];
 
-#let mu := 1/ptr * sum{p in 1..ptr} xtr[1,p];
-
-#let s := 1/ptr * sum{p in 1..ptr} abs(xtr[1,p] - mu);
-
-#let{p in 1..ptr} xtr[1,p] := (xtr[1,p] - mu) / s;
-
+# Scale of Age
 let{p in 1..ptr} xtr[1,p] := (xtr[1,p] - lbx[1]) / (ubx[1] - lbx[1]);
 
-
+# Traveltime values inversion
 let{p in 1..ptr} xtr[5,p] := ubx[5] + lbx[5] - xtr[5,p];
 
+# Failures values inversion
 let{p in 1..ptr} xtr[7,p] := ubx[7] + lbx[7] - xtr[7,p];
 
 # Scale of Medu, Fedu, traveltime, studytime, failures
 for {i in 3..7} {
-
-	#let mu := 1/ptr * sum{p in 1..ptr} xtr[i,p];
-
-	#let s := 1/ptr * sum{p in 1..ptr} abs(xtr[i,p] - mu);
-
-	#let{p in 1..ptr} xtr[i,p] := (xtr[i,p] - mu) / s;
-
 	let{p in 1..ptr} xtr[i,p] := (xtr[i,p] - lbx[i]) / (ubx[i] - lbx[i]);
 }
 
+# Inversion of freetime, goout, Dalc and Walc values
 for {i in 17..20} {
 	let{p in 1..ptr} xtr[i,p] := ubx[i] + lbx[i] - xtr[i,p];
 }
 
-#let{p in 1..ptr} xtr[21,p] := ubx[21] + lbx[21] - xtr[21,p];
-
+# Absences values inverison
 let{p in 1..ptr} xtr[22,p] := ubx[22] + lbx[22] - xtr[22,p];
 
-
+# Scale of famrel, freetime, goout, Dalc, Walc, health, absences, G1 and G2
 for {i in 16..24} {
-
-	#let mu := 1/ptr * sum{p in 1..ptr} xtr[i,p];
-
-	#let s := 1/ptr * sum{p in 1..ptr} abs(xtr[i,p] - mu);
-
-	#let{p in 1..ptr} xtr[i,p] := (xtr[i,p] - mu) / s;
-
 	let{p in 1..ptr} xtr[i,p] := (xtr[i,p] - lbx[i]) / (ubx[i] - lbx[i]);
 }
 
 # Scale G3
-#let lb_f := min{p in 1..ptr} ytr[p];
-#let ub_f := max{p in 1..ptr} ytr[p];
-
-#let mu := 1/ptr * sum{p in 1..ptr} ytr[p];
-
-#let s := 1/ptr * sum{p in 1..ptr} abs(ytr[p] - mu);
-
-#let{p in 1..ptr} ytr[p] := (ytr[p] - mu) / s;
-
 let{p in 1..ptr} ytr[p] := (ytr[p] - lb_f) / (ub_f - lb_f);
-
 
 
 
 # ------------------------------------
 # Lettura e scaling del validation set
 # ------------------------------------
-read pval < validation_por.txt;
+read pval < (validationFile);
 for {p in 1..pval}{
 	for {k in 1..n-1}{
-		read xval[k,p] < validation_por.txt;
+		read xval[k,p] < (validationFile);
 	}
-	read yval[p] < validation_por.txt;
+	read yval[p] < (validationFile);
 }
 
 
-# Scale of age
-
+# Age values inversion
 let{p in 1..pval} xval[1,p] := ubx[1] + lbx[1] - xval[1,p];
 
-#let mu := 1/pval * sum{p in 1..pval} xval[1,p];
-
-#let s := 1/pval * sum{p in 1..pval} abs(xval[1,p] - mu);
-
-#let{p in 1..pval} xval[1,p] := (xval[1,p] - mu) / s;
-
+# Scale of Age
 let{p in 1..pval} xval[1,p] := (xval[1,p] - lbx[1]) / (ubx[1] - lbx[1]);
 
+# Traveltime values inversion
 let{p in 1..pval} xval[5,p] := ubx[5] + lbx[5] - xval[5,p];
 
+# Failures values inversion
 let{p in 1..pval} xval[7,p] := ubx[7] + lbx[7] - xval[7,p];
 
 # Scale of Medu, Fedu, traveltime, studytime, failures
 for {i in 3..7} {
-	#let mu := 1/pval * sum{p in 1..pval} xval[i,p];
-
-	#let s := 1/pval * sum{p in 1..pval} abs(xval[i,p] - mu);
-
-	#let{p in 1..pval} xval[i,p] := (xval[i,p] - mu) / s;
-
 	let{p in 1..pval} xval[i,p] := (xval[i,p] - lbx[i]) / (ubx[i] - lbx[i]);
 }
 
+# Inversion of freetime, goout, Dalc and Walc values
 for {i in 17..20} {
 	let{p in 1..pval} xval[i,p] := ubx[i] + lbx[i] - xval[i,p];
 }
 
-#let{p in 1..pval} xval[21,p] := ubx[21] + lbx[21] - xval[21,p];
-
+# Absences values inverison
 let{p in 1..pval} xval[22,p] := ubx[22] + lbx[22] - xval[22,p];
 
+# Scale of famrel, freetime, goout, Dalc, Walc, health, absences, G1 and G2
 for {i in 16..24} {
-	#let mu := 1/pval * sum{p in 1..pval} xval[i,p];
-
-	#let s := 1/pval * sum{p in 1..pval} abs(xval[i,p] - mu);
-
-	#let{p in 1..pval} xval[i,p] := (xval[i,p] - mu) / s;
-
 	let{p in 1..pval} xval[i,p] := (xval[i,p] - lbx[i]) / (ubx[i] - lbx[i]);
 }
 
-
 # Scale G3
-#let mu := 1/pval * sum{p in 1..pval} yval[p];
-
-#let s := 1/pval * sum{p in 1..pval} abs(yval[p] - mu);
-
-#let{p in 1..pval} yval[p] := (yval[p] - mu) / s;
-
 let{p in 1..pval} yval[p] := (yval[p] - lb_f) / (ub_f - lb_f);
 
 
-
-
-/*
-# ------------------------------------
+# ------------------------------
 # Lettura e scaling del test set
-# ------------------------------------
+# ------------------------------
+read ptest < (testFile);
 for {p in 1..ptest}{
 	for {k in 1..n-1}{
-		read xtest[k,p] < test_por.txt;
+		read xtest[k,p] < (testFile);
 	}
-	read ytest[p] < test_por.txt;
+	read ytest[p] < (testFile);
 }
 
 
-# Scale of age
+# Age values inversion
+let{p in 1..ptest} xtest[1,p] := ubx[1] + lbx[1] - xtest[1,p];
 
-#let{p in 1..ptest} xtest[1,p] := ubx[1] + lbx[1] - xtest[1,p];
+# Scale of Age
+let{p in 1..ptest} xtest[1,p] := (xtest[1,p] - lbx[1]) / (ubx[1] - lbx[1]);
 
-let{p in 1..ptest} xtest[1,p] :=  (xtest[1,p] - lbx[1]) / (ubx[1] - lbx[1]);
+# Traveltime values inversion
+let{p in 1..ptest} xtest[5,p] := ubx[5] + lbx[5] - xtest[5,p];
 
-#let{p in 1..ptest} xtest[5,p] := ubx[5] + lbx[5] - xtest[5,p];
+# Failures values inversion
+let{p in 1..ptest} xtest[7,p] := ubx[7] + lbx[7] - xtest[7,p];
 
 # Scale of Medu, Fedu, traveltime, studytime, failures
 for {i in 3..7} {
 	let{p in 1..ptest} xtest[i,p] := (xtest[i,p] - lbx[i]) / (ubx[i] - lbx[i]);
 }
 
-#for {i in 17..21} {
-#	let{p in 1..ptest} xtest[i,p] := ubx[i] + lbx[i] - xtest[i,p];
-#}
+# Inversion of freetime, goout, Dalc and Walc values
+for {i in 17..20} {
+	let{p in 1..ptest} xtest[i,p] := ubx[i] + lbx[i] - xtest[i,p];
+}
 
-#let{p in 1..ptest} xtest[22,p] := ubx[22] + lbx[22] - xtest[22,p];
+# Absences values inverison
+let{p in 1..ptest} xtest[22,p] := ubx[22] + lbx[22] - xtest[22,p];
 
-
-
+# Scale of famrel, freetime, goout, Dalc, Walc, health, absences, G1 and G2
 for {i in 16..24} {
 	let{p in 1..ptest} xtest[i,p] := (xtest[i,p] - lbx[i]) / (ubx[i] - lbx[i]);
 }
 
 # Scale G3
 let{p in 1..ptest} ytest[p] := (ytest[p] - lb_f) / (ub_f - lb_f);
-*/

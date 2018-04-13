@@ -1,33 +1,24 @@
-param nl := 2;
-param n := 50;
-param ptr;
-param pval;
-#param ptest := 69;
+param trainingFile := "training_por.txt";
+param validationFile := "validation_por.txt";
+param testFile := "test_por.txt";	# insert your test file name
 
-param gamma := 0.000006;
-param c := 3;
-param nmax := 150;
+param nl := 2;	# Number of neurons 
+param n := 50;	# Number of features
+param ptr;		# Number of training records
+param pval;		# Number of validation records
+param ptest;	# Number of test records
 
+param gamma := 0.000006;	# Regolarization parameter
+param c := 0.6;				# c factor for the logistic fuction
+param nmax := 150;			# max number of try for training
+
+# max and min value for uniform generation of win and v
 param rangeinf := -10;
 param rangesup := 10;
-
-
-# 0.0335865
-/*
-seed 1522935987588948
-param gamma := 0.000006;
-param c := 0.5;
-param nmax := 100;
-
-param rangeinf := -10;
-param rangesup := 10;
-
-seed 1523177691204678
-0.0334824
-*/
 
 param stop_tr := 0;
 
+# lower and upper bound of all not binary features
 param: lbx ubx :=
 1  15 22
 2   0  1

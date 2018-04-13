@@ -1,14 +1,11 @@
 library("dplyr")
-data_por <- read.csv("/home/federico/Scrivania/Anno2Semestre1/ProgettoMOBD/training_por.csv",stringsAsFactors = F)
-type_attribute <- lapply(data_por, class)
+data_por <- read.csv("training_por.csv",stringsAsFactors = F)  # Set your testset path
+
 data_rows <- nrow(data_por)
 data_cols <- ncol(data_por)
 n_duplicate <- sum(duplicated(data_por))
 n_complete <- sum(complete.cases(data_por))
 
-summary_attribute <- lapply(data_por, summary)
-
-#data_por_final <- mutate(data_por, age = NULL)
 data_por_final <- mutate(data_por, GP = ifelse(school == "GP", 1, 0))
 data_por_final <- mutate(data_por_final, MS = ifelse(school == "MS", 1, 0))
 data_por_final <- mutate(data_por_final, school = NULL)
@@ -63,28 +60,12 @@ data_por_final <- mutate(data_por_final, G3 = NULL)
 data_por_final <- cbind(data_por_final,G3) 
 
 nrow <- nrow(data_por_final)
-train_size <- floor(0.70 * nrow)
-train_ind <- sample(seq_len(nrow), size = train_size)
 
-train <- data_por_final[train_ind, ]
-val <- data_por_final[-train_ind, ]
-
-#nrowval <- nrow(valtest);
-#val_size <- floor(0.5 * nrowval);
-#val_ind <- sample(seq_len(nrowval), size = val_size)
-
-#val <- valtest[val_ind,]
-#test <- valtest[-val_ind, ]
-fileConn<-file("/home/federico/Scrivania/Anno2Semestre1/ProgettoMOBD/training_por.txt")
-write(c(nrow(train)), file=fileConn)
+# Write number of instances
+fileConn<-file("test_por.txt")
+write(c(nrow(data_por_final)), file=fileConn)
 close(fileConn)
 
-write.table(train, append = TRUE, quote= FALSE, row.names = FALSE, col.names = FALSE, file="/home/federico/Scrivania/Anno2Semestre1/ProgettoMOBD/training_por.txt")
-
-fileConn<-file("/home/federico/Scrivania/Anno2Semestre1/ProgettoMOBD/validation_por.txt")
-write(c(nrow(val)), file=fileConn)
-close(fileConn)
-
-write.table(val, append = TRUE, quote= FALSE, row.names = FALSE, col.names = FALSE, file="/home/federico/Scrivania/Anno2Semestre1/ProgettoMOBD/validation_por.txt")
-#write.table(test, quote= FALSE, row.names = FALSE, col.names = FALSE, file="/home/federico/Scrivania/Anno2Semestre1/ProgettoMOBD/test_por.txt")
+# Append table to the file
+write.table(data_por_final, append = TRUE, quote= FALSE, row.names = FALSE, col.names = FALSE, file="test_por.txt")
 
